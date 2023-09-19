@@ -1,23 +1,23 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Next.js Starter Blog',
-  author: 'Tails Azimuth',
-  headerTitle: 'TailwindBlog',
-  description: 'A blog created with Next.js and Tailwind.css',
-  language: 'en-us',
+  title: 'Blog | Henrique Rocha Dev',
+  author: 'Henrique Rocha Serrano',
+  headerTitle: 'HenriqueRochaDev | Blog',
+  description: 'Um blog criado para compartilhar conhecimento e experiências.',
+  language: 'pt-BR',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
-  siteLogo: '/static/images/logo.png',
-  socialBanner: '/static/images/twitter-card.png',
-  mastodon: 'https://mastodon.social/@mastodonuser',
-  email: 'address@yoursite.com',
-  github: 'https://github.com',
-  twitter: 'https://twitter.com/Twitter',
-  facebook: 'https://facebook.com',
-  youtube: 'https://youtube.com',
-  linkedin: 'https://www.linkedin.com',
-  locale: 'en-US',
+  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app', // TODO: CHANGE
+  siteRepo: 'https://github.com/henriquerochars/tailwind-nextjs-starter-blog', // TODO: CHANGE
+  siteLogo: '/static/images/logo.png', // TODO: CHANGE
+  socialBanner: '/static/images/twitter-card.png', // TODO: CHANGE
+  // mastodon: 'https://mastodon.social/@mastodonuser', // TODO: REMOVE
+  // email: 'address@yoursite.com', // TODO: REMOVE
+  github: 'https://github.com/henriquerochars',
+  twitter: 'https://twitter.com/henriquerochars',
+  // facebook: 'https://facebook.com', // TODO: REMOVE
+  // youtube: 'https://youtube.com', // TODO: REMOVE
+  linkedin: 'https://www.linkedin.com/in/henriquerochaserrano/',
+  locale: 'pt-BR',
   analytics: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.
