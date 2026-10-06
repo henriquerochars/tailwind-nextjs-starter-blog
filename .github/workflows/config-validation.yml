@@ -5,6 +5,10 @@ on:
     branches:
       - maintenance/issue-10-config-security
 
+concurrency:
+  group: config-validation-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest
