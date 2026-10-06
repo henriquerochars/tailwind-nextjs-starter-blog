@@ -38,3 +38,19 @@ jobs:
 
       - name: Format check
         run: yarn format:check
+
+      - name: Install Playwright browser
+        run: yarn playwright install --with-deps chromium
+
+      - name: Run smoke and regression tests
+        run: yarn test:e2e:ci
+
+      - name: Upload Playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
