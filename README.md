@@ -133,8 +133,21 @@ npx degit 'timlrx/tailwind-nextjs-starter-blog'
 
 ## Installation
 
+### Requirements
+
+- Node.js 24.x
+- Yarn 3.6.1 (the repository pins its Yarn binary under `.yarn/releases`)
+
+If you use `nvm`:
+
 ```bash
-yarn
+nvm use
+```
+
+Install dependencies from the committed lockfile:
+
+```bash
+yarn install --immutable
 ```
 
 ## Development
