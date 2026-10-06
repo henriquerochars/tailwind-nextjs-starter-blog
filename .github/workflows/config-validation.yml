@@ -1,0 +1,22 @@
+name: Config and security validation
+
+on:
+  push:
+    branches:
+      - maintenance/issue-10-config-security
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+      - run: yarn install --immutable
+      - run: yarn build
+      - run: yarn typecheck
+      - run: yarn lint
+      - run: yarn format:check
