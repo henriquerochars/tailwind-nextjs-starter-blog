@@ -5,6 +5,10 @@ on:
     branches:
       - chore/issue-6-next-16
 
+concurrency:
+  group: next16-validation-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
