@@ -20,9 +20,9 @@ jobs:
           cache: yarn
       - name: Refresh lockfile
         run: yarn install --no-immutable
+      - run: yarn build
       - run: yarn typecheck
       - run: yarn lint
-      - run: yarn build
       - name: Commit refreshed lockfile
         run: |
           if git diff --quiet -- yarn.lock; then
