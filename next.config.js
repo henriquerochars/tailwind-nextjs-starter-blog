@@ -62,6 +62,14 @@ module.exports = () => {
   return plugins.reduce((acc, next) => next(acc), {
     reactStrictMode: true,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+    webpack: (config) => {
+      config.module.rules.push({
+        test: /\.svg$/,
+        issuer: /\.[jt]sx?$/,
+        use: ['@svgr/webpack'],
+      })
+      return config
+    },
     images: {
       remotePatterns: [
         {
