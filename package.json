@@ -63,7 +63,8 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "^5.9.3",
     "@types/react-dom": "19.3.0",
-    "@playwright/test": "1.63.0"
+    "@playwright/test": "1.63.0",
+    "@svgr/webpack": "^8.1.0"
   },
   "lint-staged": {
     "*.+(js|jsx|ts|tsx)": [
