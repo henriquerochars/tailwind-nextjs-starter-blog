@@ -6,10 +6,10 @@ const siteMetadata = {
   description: 'Um blog criado para compartilhar conhecimento e experiências.',
   language: 'pt-BR',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app', // TODO: CHANGE
-  siteRepo: 'https://github.com/henriquerochars/tailwind-nextjs-starter-blog', // TODO: CHANGE
-  siteLogo: '/static/images/logo.png', // TODO: CHANGE
-  socialBanner: '/static/images/twitter-card.png', // TODO: CHANGE
+  siteUrl: 'https://henriquerochadevblog.vercel.app',
+  siteRepo: 'https://github.com/henriquerochars/tailwind-nextjs-starter-blog',
+  siteLogo: '/static/images/logo.png',
+  socialBanner: '/static/images/twitter-card.png',
   // mastodon: 'https://mastodon.social/@mastodonuser', // TODO: REMOVE
   // email: 'address@yoursite.com', // TODO: REMOVE
   github: 'https://github.com/henriquerochars',
@@ -37,11 +37,7 @@ const siteMetadata = {
     //   googleAnalyticsId: '', // e.g. G-XXXXXXX
     // },
   },
-  newsletter: {
-    // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus
-    // Please add your .env file and modify it according to your selection
-    provider: 'buttondown',
-  },
+  // Newsletter is intentionally disabled until the UI is re-enabled.
   comments: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.
@@ -69,7 +65,7 @@ const siteMetadata = {
       // example: https://giscus.app/themes/custom_example.css
       themeURL: '',
       // This corresponds to the `data-lang="en"` in giscus's configurations
-      lang: 'en',
+      lang: 'pt',
     },
   },
   search: {
