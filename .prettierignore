@@ -1,0 +1,11 @@
+.yarn/
+.next/
+.contentlayer/
+node_modules/
+out/
+build/
+public/search.json
+app/tag-data.json
+next-env.d.ts
+playwright-report/
+test-results/
