@@ -12,10 +12,9 @@ test.describe('blog smoke and regression coverage', () => {
 
     await expect(page.getByRole('heading', { name: 'Últimas postagens' })).toBeVisible()
     await expect(page.locator('a[href="/blog"]:visible')).toBeVisible()
-    await expect(page.locator('a[href="https://henriquerochadev.vercel.app/"]:visible')).toHaveAttribute(
-      'href',
-      'https://henriquerochadev.vercel.app/'
-    )
+    await expect(
+      page.locator('a[href="https://henriquerochadev.vercel.app/"]:visible')
+    ).toHaveAttribute('href', 'https://henriquerochadev.vercel.app/')
 
     expect(errors).toEqual([])
   })
