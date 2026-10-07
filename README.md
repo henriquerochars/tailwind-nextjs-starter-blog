@@ -131,6 +131,13 @@ npx degit 'timlrx/tailwind-nextjs-starter-blog'
 7. Add blog posts
 8. Deploy on Vercel
 
+## Runtime
+
+- Node.js 24.x
+- Yarn 3.6.1
+
+If you use `nvm`, run `nvm use` before installing dependencies.
+
 ## Installation
 
 ```bash
