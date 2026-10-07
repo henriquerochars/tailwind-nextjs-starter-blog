@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - qa/issue-12-blog-smoke
 
 jobs:
   validate:
