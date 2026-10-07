@@ -24,6 +24,9 @@ jobs:
       - name: Refresh lockfile
         run: yarn install --no-immutable
 
+      - name: Build
+        run: yarn build
+
       - name: Type check
         run: yarn typecheck
 
@@ -32,9 +35,6 @@ jobs:
 
       - name: Check formatting
         run: yarn format:check
-
-      - name: Build
-        run: yarn build
 
       - name: Install Playwright browser
         run: yarn playwright install --with-deps chromium
