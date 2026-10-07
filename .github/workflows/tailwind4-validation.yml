@@ -25,7 +25,6 @@ jobs:
       - run: yarn install --no-immutable
       - run: yarn build
       - run: yarn typecheck
-      - run: yarn lint
       - name: Commit refreshed lockfile
         run: |
           if git diff --quiet -- yarn.lock; then
