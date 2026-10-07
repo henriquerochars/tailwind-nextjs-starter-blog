@@ -11,10 +11,11 @@ test.describe('blog smoke and regression coverage', () => {
     await page.goto('/')
 
     await expect(page.getByRole('heading', { name: 'Últimas postagens' })).toBeVisible()
-    await expect(page.locator('a[href="/blog"]:visible')).toBeVisible()
-    await expect(
-      page.locator('a[href="https://henriquerochadev.vercel.app/"]:visible')
-    ).toHaveAttribute('href', 'https://henriquerochadev.vercel.app/')
+    await expect(page.getByRole('link', { name: 'Blog Index' }).first()).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Portfolio Page' }).first()).toHaveAttribute(
+      'href',
+      'https://henriquerochadev.vercel.app/'
+    )
 
     expect(errors).toEqual([])
   })
@@ -51,7 +52,7 @@ test.describe('blog smoke and regression coverage', () => {
 
     const menuButtons = page.getByRole('button', { name: 'Toggle Menu' })
     await menuButtons.first().click()
-    await expect(page.locator('a[href="/blog"]:visible')).toBeVisible()
+    await expect(page.locator('nav').getByRole('link', { name: 'Blog Index' })).toBeVisible()
   })
 
   test('serves SEO, feed, and generated search artifacts', async ({ request }) => {
