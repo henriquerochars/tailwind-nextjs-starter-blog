@@ -8,7 +8,7 @@ on:
   push:
     branches:
       - main
-      - ci/issue-11-blog-ci
+      - qa/issue-12-blog-smoke
 
 jobs:
   validate:
@@ -36,7 +36,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add yarn.lock
-            git commit -m "chore: refresh lockfile for definitive CI"
+            git commit -m "chore: refresh lockfile for Playwright"
             git push
           fi
 
@@ -54,3 +54,19 @@ jobs:
 
       - name: Format check
         run: yarn format:check
+
+      - name: Install Playwright browser
+        run: yarn playwright install --with-deps chromium
+
+      - name: Run smoke and regression tests
+        run: yarn test:e2e:ci
+
+      - name: Upload Playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore

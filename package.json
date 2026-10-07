@@ -13,7 +13,9 @@
     "prepare": "husky",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "verify:generated": "test -f .contentlayer/generated/index.mjs && test -f app/tag-data.json && test -f public/search.json && test -f public/feed.xml"
+    "verify:generated": "test -f .contentlayer/generated/index.mjs && test -f app/tag-data.json && test -f public/search.json && test -f public/feed.xml",
+    "test:e2e": "yarn build && playwright test",
+    "test:e2e:ci": "playwright test"
   },
   "dependencies": {
     "@next/bundle-analyzer": "16.3.8",
@@ -61,6 +63,7 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "^5.9.3",
     "@types/react-dom": "19.3.0",
+    "@playwright/test": "1.63.0",
     "@svgr/webpack": "^8.1.0"
   },
   "lint-staged": {
