@@ -10,8 +10,12 @@ test.describe('blog smoke and regression coverage', () => {
     await page.goto('/')
 
     await expect(page.getByRole('heading', { name: 'Últimas postagens' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Minha primeira palestra em um evento aberto a comunidade' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Primeiro post do blog, meu diário técnico' })).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: 'Minha primeira palestra em um evento aberto a comunidade' })
+    ).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: 'Primeiro post do blog, meu diário técnico' })
+    ).toBeVisible()
     expect(errors).toEqual([])
   })
 
@@ -19,9 +23,14 @@ test.describe('blog smoke and regression coverage', () => {
     await page.goto('/blog')
     await expect(page.getByRole('heading', { name: 'All Posts' })).toBeVisible()
 
-    await page.getByRole('link', { name: 'Primeiro post do blog, meu diário técnico' }).first().click()
+    await page
+      .getByRole('link', { name: 'Primeiro post do blog, meu diário técnico' })
+      .first()
+      .click()
     await expect(page).toHaveURL(/\/blog\/first-post$/)
-    await expect(page.getByRole('heading', { name: 'Primeiro post do blog, meu diário técnico' })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: 'Primeiro post do blog, meu diário técnico' })
+    ).toBeVisible()
     await expect(page.getByText('Por que eu criei esse blog?')).toBeVisible()
   })
 
@@ -30,7 +39,9 @@ test.describe('blog smoke and regression coverage', () => {
     await page.getByRole('link', { name: /diary/i }).first().click()
     await expect(page).toHaveURL(/\/tags\/diary$/)
     await expect(page.getByRole('heading', { name: /Diary/i })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Primeiro post do blog, meu diário técnico' })).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: 'Primeiro post do blog, meu diário técnico' })
+    ).toBeVisible()
   })
 
   test('toggles dark mode', async ({ page }) => {
