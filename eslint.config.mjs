@@ -6,12 +6,9 @@ export default defineConfig([
   ...nextVitals,
   ...nextTs,
   {
+    files: ['**/*.config.js', 'next.config.js'],
     rules: {
-      '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-require-imports': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      'react/no-unescaped-entities': 'off',
-      'react-hooks/set-state-in-effect': 'off',
     },
   },
   globalIgnores([
