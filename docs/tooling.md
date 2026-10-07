@@ -5,6 +5,7 @@
 The project intentionally remains on Yarn 3.6.1 for this modernization cycle.
 
 Reasons:
+
 - the repository already commits the Yarn 3 binary and lockfile;
 - moving package managers while upgrading framework/content/styling would add unnecessary migration risk;
 - CI uses the same pinned Yarn version.
