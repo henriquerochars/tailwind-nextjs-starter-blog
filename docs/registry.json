@@ -4,7 +4,10 @@
       "path": "docs/decisions/0001-content-pipeline.md",
       "purpose": "Accepted Contentlayer2 pipeline decision"
     },
-    { "path": "docs/engineering/index.md", "purpose": "Engineering entry point" },
+    {
+      "path": "docs/engineering/index.md",
+      "purpose": "Engineering entry point"
+    },
     {
       "path": "docs/engineering/repo-map.md",
       "purpose": "Source ownership and generated boundaries"
@@ -20,6 +23,10 @@
     {
       "path": "docs/plans/engineering-harness-implementation-plan.md",
       "purpose": "Approved scope and implementation sequence"
+    },
+    {
+      "path": "docs/engineering/integrations.md",
+      "purpose": "Canonical URLs, disabled integrations, optional analytics and CSP"
     }
   ]
 }

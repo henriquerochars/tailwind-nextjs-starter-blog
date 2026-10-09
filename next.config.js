@@ -1,26 +1,33 @@
 const { withContentlayer } = require('next-contentlayer2')
+const siteMetadata = require('./data/siteMetadata')
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 
-// You might need to insert additional domains in script-src if you are using external services
+const isDev = process.env.NODE_ENV === 'development'
+const umami = siteMetadata.analytics.umamiAnalytics
+// Static pages need inline Next.js/theme scripts; development also needs eval and HMR.
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is;
+  script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}${umami ? ` ${new URL(umami.src).origin}` : ''};
   style-src 'self' 'unsafe-inline';
-  img-src * blob: data:;
-  media-src *.s3.amazonaws.com;
-  connect-src *;
+  img-src 'self' blob: data:;
+  media-src 'self';
+  connect-src 'self'${umami ? ` ${umami.umamiHostUrl}` : ''}${isDev ? ' ws: wss:' : ''};
   font-src 'self';
-  frame-src giscus.app
+  frame-src 'none';
+  object-src 'none';
+  base-uri 'self';
+  form-action 'self';
+  frame-ancestors 'none';
 `
 
 const securityHeaders = [
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
   {
     key: 'Content-Security-Policy',
-    value: ContentSecurityPolicy.replace(/\n/g, ''),
+    value: ContentSecurityPolicy.replace(/\s+/g, ' ').trim(),
   },
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
   {

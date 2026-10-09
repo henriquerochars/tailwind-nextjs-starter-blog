@@ -46,6 +46,9 @@ export async function put(directory, name, text) {
   await writeFile(target, text)
 }
 
+// Public, synthetic UUID used only by the isolated production fixture.
+export const umamiWebsiteId = '123e4567-e89b-42d3-a456-426614174000'
+
 export const publishedSlug = '__harness/nested/published'
 export const draftSlug = '__harness/draft'
 export const publishedTitle = 'Harness published & verified'

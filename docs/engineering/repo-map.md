@@ -2,7 +2,7 @@
 
 | Path                                            | Responsibility                                                          |
 | ----------------------------------------------- | ----------------------------------------------------------------------- |
-| `app/`                                          | App Router pages, metadata, sitemap, robots and newsletter API          |
+| `app/`                                          | App Router pages, metadata, sitemap, robots                             |
 | `components/`, `layouts/`                       | Shared UI and MDX layouts                                               |
 | `lib/`                                          | Shared publication date formatting in UTC                               |
 | `data/blog/`, `data/authors/`                   | Author-owned MDX sources; preserve their bytes during tooling changes   |
@@ -19,4 +19,4 @@ Generated output: `.contentlayer/`, `.next/`, `app/tag-data.json`, `public/searc
 
 Renders flow from MDX through Contentlayer2 into Next.js pages and generated search, tags, feeds and sitemap. Production drafts must not enter those public surfaces. Dynamic post metadata and page rendering both enforce this boundary.
 
-The API and metadata still reference existing provider/domain configuration. Their administration is a separate task; automated tests never contact those providers.
+Canonical URLs and optional Umami analytics are configured centrally; comments and newsletter are disabled. See [public URLs and integrations](integrations.md). Cloud administration remains separate; automated tests never contact providers.

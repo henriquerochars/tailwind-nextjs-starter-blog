@@ -30,6 +30,9 @@ export async function checkArtifacts(directory) {
     assert.ok(published.body.code.includes(token), `compiled rich MDX contains ${token}`)
   }
   assert.equal(published.structuredData['@type'], 'BlogPosting')
+  const origin = 'https://henriquerochadevblog.vercel.app'
+  assert.equal(published.structuredData.url, `${origin}/blog/${publishedSlug}`)
+  assert.equal(published.structuredData.image, `${origin}/static/images/twitter-card.png`)
   const tags = await json(directory, 'app/tag-data.json')
   const publicPosts = posts.filter((post) => post.draft !== true)
   assert.equal(tags['harness-shared'], 7)
@@ -48,6 +51,10 @@ export async function checkArtifacts(directory) {
     'utf8'
   )
   for (const feed of [mainFeed, tagFeed]) {
+    assert.ok(feed.includes(`<link>${origin}/blog</link>`))
+    assert.ok(feed.includes(`<guid>${origin}/blog/${publishedSlug}</guid>`))
+    assert.ok(!/<(?:author|managingEditor|webMaster)>/.test(feed), 'no unconfigured email')
+    assert.ok(!feed.includes('undefined'))
     assert.ok(feed.includes('Harness published &amp; verified'))
     assert.ok(feed.includes('Harness &amp; XML'))
     assert.ok(feed.includes('Fixture summary &lt;safe&gt; &amp; checked'))
@@ -65,5 +72,11 @@ export async function checkArtifacts(directory) {
   const sitemap = await readFile(path.join(directory, '.next/server/app/sitemap.xml.body'), 'utf8')
   assert.ok(sitemap.includes(`/blog/${publishedSlug}`))
   assert.ok(!sitemap.includes(draftSlug))
+  assert.ok(sitemap.includes(`<loc>${origin}/blog/${publishedSlug}</loc>`))
+  const robots = await readFile(path.join(directory, '.next/server/app/robots.txt.body'), 'utf8')
+  assert.ok(robots.includes(`Host: ${origin}`))
+  assert.ok(robots.includes(`Sitemap: ${origin}/sitemap.xml`))
+  const routes = await json(directory, '.next/server/app-paths-manifest.json')
+  assert.ok(!Object.keys(routes).some((route) => route.startsWith('/api/newsletter')))
   console.log(`Blog artifacts passed: ${publicPosts.length} published posts; drafts excluded`)
 }

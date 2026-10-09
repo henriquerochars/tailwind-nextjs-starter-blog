@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import {
+  umamiWebsiteId,
   publishedSlug,
   publishedTitle,
   draftSlug,
@@ -16,6 +17,12 @@ test.beforeEach(async ({ context, page, baseURL }) => {
     if (url.pathname === '/api/newsletter') {
       newsletterRequests++
       return route.abort()
+    }
+    if (url.href === 'https://cloud.umami.is/script.js') {
+      return route.fulfill({
+        contentType: 'application/javascript',
+        body: 'window.__umamiStubLoaded = true',
+      })
     }
     if (url.origin !== new URL(baseURL).origin) return route.abort()
     return route.continue()
@@ -134,5 +141,35 @@ test('theme persists and mobile navigation opens, closes and restores scrolling'
     await expect(menu).toHaveAttribute('aria-expanded', 'false')
   } else {
     await expect(menu).toBeHidden()
+  }
+})
+
+test('production metadata, analytics and CSP use the personal configuration', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__cspViolations = []
+    document.addEventListener('securitypolicyviolation', (event) => {
+      window.__cspViolations.push(`${event.violatedDirective}: ${event.blockedURI}`)
+    })
+  })
+  const response = await page.goto('/')
+  const csp = response.headers()['content-security-policy']
+  expect(csp).toContain("connect-src 'self' https://gateway.umami.is;")
+  expect(csp).toContain("script-src 'self' 'unsafe-inline' https://cloud.umami.is;")
+  expect(csp).not.toContain('unsafe-eval')
+  expect(csp).not.toContain('*')
+  await expect.poll(() => page.evaluate(() => window.__umamiStubLoaded)).toBe(true)
+  const tracker = page.locator('script[src="https://cloud.umami.is/script.js"]')
+  await expect(tracker).toHaveAttribute('data-website-id', umamiWebsiteId)
+  await expect(tracker).toHaveAttribute('data-host-url', 'https://gateway.umami.is')
+  await expect(tracker).toHaveAttribute('data-domains', 'henriquerochadevblog.vercel.app')
+  for (const route of ['/', `/blog/${publishedSlug}`]) {
+    await page.goto(route)
+    const canonical = `https://henriquerochadevblog.vercel.app${route === '/' ? '' : route}`
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical)
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', canonical)
+    await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'pt_BR')
+    await expect(page.locator('#comment, iframe, form[action="/api/newsletter"]')).toHaveCount(0)
+    await expect(page.getByRole('button', { name: 'Scroll To Comment' })).toHaveCount(0)
+    expect(await page.evaluate(() => window.__cspViolations)).toEqual([])
   }
 })
