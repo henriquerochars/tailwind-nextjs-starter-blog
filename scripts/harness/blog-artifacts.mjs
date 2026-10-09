@@ -35,6 +35,10 @@ export async function checkArtifacts(directory) {
   assert.equal(published.structuredData.image, `${origin}/static/images/twitter-card.png`)
   const tags = await json(directory, 'app/tag-data.json')
   const publicPosts = posts.filter((post) => post.draft !== true)
+  for (const post of publicPosts) {
+    assert.equal(post.structuredData.url, `${origin}/blog/${post.slug}`)
+    assert.ok(URL.canParse(post.structuredData.image), `absolute JSON-LD image: ${post.slug}`)
+  }
   assert.equal(tags['harness-shared'], 7)
   assert.equal(tags['harness-draft-only'], undefined)
   await assert.rejects(readFile(path.join(directory, 'public/tags/harness-draft-only/feed.xml')), {
@@ -61,6 +65,14 @@ export async function checkArtifacts(directory) {
     assert.ok(!feed.includes(draftTitle))
     assert.ok(!feed.includes(draftSlug))
     assert.ok(feed.indexOf(publishedSlug) < feed.indexOf('__harness/post-6'), 'feed newest first')
+    const urls = [...feed.matchAll(/<(?:guid|link)>([^<]+)<\/(?:guid|link)>|href="([^"]+)"/g)].map(
+      (match) => match[1] || match[2]
+    )
+    assert.ok(urls.length > 0)
+    assert.ok(
+      urls.every((url) => new URL(url).origin === origin),
+      'canonical RSS origins'
+    )
   }
   assert.equal((mainFeed.match(/<item>/g) || []).length, publicPosts.length)
   assert.equal((tagFeed.match(/<item>/g) || []).length, 7)
@@ -69,13 +81,27 @@ export async function checkArtifacts(directory) {
   assert.ok(prerender.routes[`/blog/${publishedSlug}`])
   assert.ok(!prerender.routes[`/blog/${draftSlug}`])
   assert.ok(!prerender.routes['/tags/harness-draft-only'])
+  for (const post of publicPosts) assert.ok(prerender.routes[`/blog/${post.slug}`])
   const sitemap = await readFile(path.join(directory, '.next/server/app/sitemap.xml.body'), 'utf8')
   assert.ok(sitemap.includes(`/blog/${publishedSlug}`))
   assert.ok(!sitemap.includes(draftSlug))
   assert.ok(sitemap.includes(`<loc>${origin}/blog/${publishedSlug}</loc>`))
+  const locations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1])
+  assert.deepEqual(
+    locations.sort(),
+    [
+      `${origin}/`,
+      `${origin}/blog`,
+      `${origin}/projects`,
+      `${origin}/tags`,
+      ...publicPosts.map((post) => `${origin}/blog/${post.slug}`),
+    ].sort()
+  )
   const robots = await readFile(path.join(directory, '.next/server/app/robots.txt.body'), 'utf8')
   assert.ok(robots.includes(`Host: ${origin}`))
   assert.ok(robots.includes(`Sitemap: ${origin}/sitemap.xml`))
+  assert.match(robots, /User-Agent: \*/)
+  assert.match(robots, /Allow: \//)
   const routes = await json(directory, '.next/server/app-paths-manifest.json')
   assert.ok(!Object.keys(routes).some((route) => route.startsWith('/api/newsletter')))
   console.log(`Blog artifacts passed: ${publicPosts.length} published posts; drafts excluded`)
