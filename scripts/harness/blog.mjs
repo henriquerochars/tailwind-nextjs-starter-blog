@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
 import { rm } from 'node:fs/promises'
 import path from 'node:path'
-import { createFixture, put, addContent, fixtureEnvironment } from './fixture.mjs'
+import { createFixture, put, addContent, fixtureEnvironment, umamiWebsiteId } from './fixture.mjs'
 import { runNode, runYarn, stopNode, terminate } from './process.mjs'
 import { checkArtifacts } from './blog-artifacts.mjs'
 import { sourceState, assertUnchanged } from '../agent/source-state.mjs'
@@ -19,7 +19,7 @@ const interrupt = () => {
 }
 process.once('SIGINT', interrupt)
 process.once('SIGTERM', interrupt)
-const env = fixtureEnvironment()
+const env = { ...fixtureEnvironment(), NEXT_UMAMI_ID: umamiWebsiteId }
 try {
   directory = await createFixture(root)
   const invalidPath = 'data/blog/__harness-invalid.mdx'
