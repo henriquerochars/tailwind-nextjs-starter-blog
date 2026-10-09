@@ -1,11 +1,4 @@
-interface Project {
-  title: string
-  description: string
-  href?: string
-  imgSrc?: string
-}
-
-const projectsData: Project[] = [
+const projectsData = [
   {
     title: 'A Search Engine',
     description: `What if you could look up any information in the world? Webpages, images, videos

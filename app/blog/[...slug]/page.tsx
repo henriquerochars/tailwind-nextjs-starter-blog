@@ -12,7 +12,6 @@ import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
-import { notFound } from 'next/navigation'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -45,7 +44,7 @@ export async function generateMetadata(props: {
   }
   const ogImages = imageList.map((img) => {
     return {
-      url: img && img.includes('http') ? img : siteMetadata.siteUrl + img,
+      url: img.includes('http') ? img : siteMetadata.siteUrl + img,
     }
   })
 
@@ -74,7 +73,9 @@ export async function generateMetadata(props: {
 }
 
 export const generateStaticParams = async () => {
-  return allBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
+  const paths = allBlogs.map((p) => ({ slug: p.slug.split('/') }))
+
+  return paths
 }
 
 export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
@@ -84,7 +85,16 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
   const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
   if (postIndex === -1) {
-    return notFound()
+    return (
+      <div className="mt-24 text-center">
+        <PageTitle>
+          Under Construction{' '}
+          <span role="img" aria-label="roadwork sign">
+            🚧
+          </span>
+        </PageTitle>
+      </div>
+    )
   }
 
   const prev = sortedCoreContents[postIndex + 1]
