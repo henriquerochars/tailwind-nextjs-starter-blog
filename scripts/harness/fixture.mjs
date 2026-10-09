@@ -50,6 +50,7 @@ export async function put(directory, name, text) {
 export const umamiWebsiteId = '123e4567-e89b-42d3-a456-426614174000'
 
 export const publishedSlug = '__harness/nested/published'
+export const oldestSlug = '__harness/oldest'
 export const draftSlug = '__harness/draft'
 export const publishedTitle = 'Harness published & verified'
 export const draftTitle = 'Harness secret draft'
@@ -102,11 +103,16 @@ export const verified = true
     `data/blog/${draftSlug}.mdx`,
     `---\ntitle: '${draftTitle}'\ndate: '2026-01-01'\ntags: ['Harness Shared', 'Harness Draft Only']\ndraft: true\n---\n\nNever publish this.\n`
   )
+  await put(
+    directory,
+    `data/blog/${oldestSlug}.mdx`,
+    `---\ntitle: Harness oldest post\ndate: '2000-01-01'\ntags: ['Harness Boundary']\n---\n\nOldest published boundary.\n`
+  )
   for (let index = 1; index <= 6; index++) {
     await put(
       directory,
       `data/blog/__harness/post-${index}.mdx`,
-      `---\ntitle: Harness pagination ${index}\ndate: '2024-01-0${index}'\ntags: ['Harness Shared']\n---\n\nPagination fixture ${index}.\n`
+      `---\ntitle: Harness pagination ${index}\ndate: '2024-01-0${index}'\ntags: ['Harness Shared']\n${index === 1 ? 'layout: PostSimple\n' : index === 2 ? 'layout: PostBanner\nimages: [\"/static/images/avatar.png\"]\n' : ''}---\n\nPagination fixture ${index}.\n`
     )
   }
 }
