@@ -1,11 +1,8 @@
-import { NewsletterAPI } from 'pliny/newsletter'
+import { NewsletterAPI, type NewsletterConfig } from 'pliny/newsletter/index.js'
 import siteMetadata from '@/data/siteMetadata'
 
-export const dynamic = 'force-static'
-
 const handler = NewsletterAPI({
-  // @ts-ignore
-  provider: siteMetadata.newsletter.provider,
+  provider: siteMetadata.newsletter.provider as NewsletterConfig['provider'],
 })
 
 export { handler as GET, handler as POST }

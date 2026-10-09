@@ -1,10 +1,10 @@
 import 'css/prism.css'
 import 'katex/dist/katex.css'
 
-import PageTitle from '@/components/PageTitle'
+import { notFound } from 'next/navigation'
 import { components } from '@/components/MDXComponents'
-import { MDXLayoutRenderer } from 'pliny/mdx-components'
-import { sortPosts, coreContent, allCoreContent } from 'pliny/utils/contentlayer'
+import { MDXLayoutRenderer } from 'pliny/mdx-components.js'
+import { sortPosts, coreContent, allCoreContent } from 'pliny/utils/contentlayer.js'
 import { allBlogs, allAuthors } from 'contentlayer/generated'
 import type { Authors, Blog } from 'contentlayer/generated'
 import PostSimple from '@/layouts/PostSimple'
@@ -12,7 +12,6 @@ import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
-import { notFound } from 'next/navigation'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -27,14 +26,12 @@ export async function generateMetadata(props: {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
   const post = allBlogs.find((p) => p.slug === slug)
+  if (!post || (process.env.NODE_ENV === 'production' && post.draft)) notFound()
   const authorList = post?.authors || ['default']
   const authorDetails = authorList.map((author) => {
     const authorResults = allAuthors.find((p) => p.slug === author)
     return coreContent(authorResults as Authors)
   })
-  if (!post) {
-    return
-  }
 
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.lastmod || post.date).toISOString()
@@ -45,7 +42,7 @@ export async function generateMetadata(props: {
   }
   const ogImages = imageList.map((img) => {
     return {
-      url: img && img.includes('http') ? img : siteMetadata.siteUrl + img,
+      url: img.includes('http') ? img : siteMetadata.siteUrl + img,
     }
   })
 
@@ -74,7 +71,9 @@ export async function generateMetadata(props: {
 }
 
 export const generateStaticParams = async () => {
-  return allBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
+  const paths = allCoreContent(allBlogs).map((p) => ({ slug: p.slug.split('/') }))
+
+  return paths
 }
 
 export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
@@ -84,7 +83,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
   const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
   if (postIndex === -1) {
-    return notFound()
+    notFound()
   }
 
   const prev = sortedCoreContents[postIndex + 1]
@@ -96,7 +95,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
     return coreContent(authorResults as Authors)
   })
   const mainContent = coreContent(post)
-  const jsonLd = post.structuredData
+  const jsonLd = { ...post.structuredData }
   jsonLd['author'] = authorDetails.map((author) => {
     return {
       '@type': 'Person',

@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync } from 'fs'
+import { writeFileSync, mkdirSync, readdirSync, rmSync, existsSync } from 'node:fs'
 import path from 'path'
 import { slug } from 'github-slugger'
 import { escape } from 'pliny/utils/htmlEscaper.js'
@@ -17,7 +17,7 @@ const generateRssItem = (config, post) => `
     ${post.summary && `<description>${escape(post.summary)}</description>`}
     <pubDate>${new Date(post.date).toUTCString()}</pubDate>
     <author>${config.email} (${config.author})</author>
-    ${post.tags && post.tags.map((t) => `<category>${t}</category>`).join('')}
+    ${post.tags && post.tags.map((t) => `<category>${escape(t)}</category>`).join('')}
   </item>
 `
 
@@ -37,17 +37,28 @@ const generateRss = (config, posts, page = 'feed.xml') => `
   </rss>
 `
 
-async function generateRSS(config, allBlogs, page = 'feed.xml') {
+function generateRSS(config, allBlogs, page = 'feed.xml') {
+  // Remove only owned feed files, so removed tags cannot keep an old public feed.
+  rmSync(path.join(outputFolder, page), { force: true })
+  const tagsFolder = path.join(outputFolder, 'tags')
+  if (existsSync(tagsFolder)) {
+    for (const entry of readdirSync(tagsFolder, { withFileTypes: true })) {
+      if (entry.isDirectory()) rmSync(path.join(tagsFolder, entry.name, page), { force: true })
+    }
+  }
   const publishPosts = allBlogs.filter((post) => post.draft !== true)
   // RSS for blog post
   if (publishPosts.length > 0) {
-    const rss = generateRss(config, sortPosts(publishPosts))
+    const rss = generateRss(config, sortPosts(publishPosts), page)
     writeFileSync(`./${outputFolder}/${page}`, rss)
   }
 
   if (publishPosts.length > 0) {
     for (const tag of Object.keys(tagData)) {
-      const filteredPosts = allBlogs.filter((post) => post.tags.map((t) => slug(t)).includes(tag))
+      const filteredPosts = sortPosts(
+        publishPosts.filter((post) => post.tags.map((t) => slug(t)).includes(tag))
+      )
+      if (!filteredPosts.length) continue
       const rss = generateRss(config, filteredPosts, `tags/${tag}/${page}`)
       const rssPath = path.join(outputFolder, 'tags', tag)
       mkdirSync(rssPath, { recursive: true })

@@ -1,4 +1,6 @@
 module.exports = {
+  plugins: ['prettier-plugin-tailwindcss'],
+  tailwindStylesheet: './css/tailwind.css',
   semi: false,
   singleQuote: true,
   printWidth: 100,
@@ -6,5 +8,4 @@ module.exports = {
   useTabs: false,
   trailingComma: 'es5',
   bracketSpacing: true,
-  plugins: ['prettier-plugin-tailwindcss'],
 }
