@@ -45,3 +45,9 @@ yarn-error.log*
 
 # Contentlayer
 .contentlayer
+
+# Regenerated before dev/build/typecheck
+/app/tag-data.json
+*.tsbuildinfo
+/test-results/
+/playwright-report/

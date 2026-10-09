@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "yarn dev",
-    "dev": "contentlayer2 build && next dev --webpack",
-    "build": "contentlayer2 build && next build --webpack && node scripts/postbuild.mjs",
+    "dev": "yarn content:build && next dev --webpack",
+    "build": "cross-env NODE_ENV=production yarn content:build && next build --webpack && node scripts/postbuild.mjs",
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true yarn build",
     "lint": "yarn lint:check",
@@ -13,8 +13,9 @@
     "lint:fix": "eslint . --fix",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
-    "typecheck": "contentlayer2 build && next typegen && tsc --noEmit",
-    "hooks:install": "husky"
+    "typecheck": "yarn content:build && next typegen && tsc --noEmit",
+    "hooks:install": "husky",
+    "content:build": "node scripts/content.mjs"
   },
   "dependencies": {
     "@next/bundle-analyzer": "16.4.0",
