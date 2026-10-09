@@ -1,0 +1,11 @@
+.yarn
+.next
+.contentlayer
+node_modules
+public
+app/tag-data.json
+data/**/*.mdx
+yarn.lock
+next-env.d.ts
+test-results
+playwright-report

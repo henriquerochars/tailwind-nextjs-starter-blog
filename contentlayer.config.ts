@@ -130,6 +130,8 @@ export const Authors = defineDocumentType(() => ({
 }))
 
 export default makeSource({
+  // Explicit paths work with TS bundler resolution; baseUrl is unnecessary.
+  disableImportAliasWarning: true,
   contentDirPath: 'data',
   documentTypes: [Blog, Authors],
   mdx: {

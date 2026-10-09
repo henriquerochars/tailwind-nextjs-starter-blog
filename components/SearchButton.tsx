@@ -1,5 +1,5 @@
-import { AlgoliaButton } from 'pliny/search/AlgoliaButton'
-import { KBarButton } from 'pliny/search/KBarButton'
+import { AlgoliaButton } from 'pliny/search/AlgoliaButton.js'
+import { KBarButton } from 'pliny/search/KBarButton.js'
 import siteMetadata from '@/data/siteMetadata'
 
 const SearchButton = () => {
@@ -18,7 +18,7 @@ const SearchButton = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="text-gray-900 dark:text-gray-100 h-6 w-6"
+          className="h-6 w-6 text-gray-900 dark:text-gray-100"
         >
           <path
             strokeLinecap="round"
