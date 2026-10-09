@@ -1,0 +1,25 @@
+{
+  "documents": [
+    {
+      "path": "docs/decisions/0001-content-pipeline.md",
+      "purpose": "Accepted Contentlayer2 pipeline decision"
+    },
+    { "path": "docs/engineering/index.md", "purpose": "Engineering entry point" },
+    {
+      "path": "docs/engineering/repo-map.md",
+      "purpose": "Source ownership and generated boundaries"
+    },
+    {
+      "path": "docs/engineering/local-development.md",
+      "purpose": "Runtime, commands and Vercel compatibility"
+    },
+    {
+      "path": "docs/engineering/verification.md",
+      "purpose": "Checks, fixtures, browser coverage and CI"
+    },
+    {
+      "path": "docs/plans/engineering-harness-implementation-plan.md",
+      "purpose": "Approved scope and implementation sequence"
+    }
+  ]
+}

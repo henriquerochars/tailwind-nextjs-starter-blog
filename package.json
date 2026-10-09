@@ -15,7 +15,11 @@
     "format:fix": "prettier --write .",
     "typecheck": "yarn content:build && next typegen && tsc --noEmit",
     "hooks:install": "husky",
-    "content:build": "node scripts/content.mjs"
+    "content:build": "node scripts/content.mjs",
+    "check:docs": "node scripts/agent/docs.mjs",
+    "test:harness": "node --test tests/harness/*.test.mjs",
+    "test:blog": "node scripts/harness/blog.mjs",
+    "check": "node scripts/agent/check.mjs"
   },
   "dependencies": {
     "@next/bundle-analyzer": "16.4.0",
