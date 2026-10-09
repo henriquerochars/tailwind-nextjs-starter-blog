@@ -26,7 +26,7 @@ If applicable, add screenshots to help explain your problem.
 **System Info (if dev / build issue):**
 
 - OS: [e.g. iOS]
-- Node version (please ensure you are using 14+)
+- Node version (please ensure you are using Node 24 from `.nvmrc`)
 - Npm version
 
 **Browser Info (if display / formatting issue):**
