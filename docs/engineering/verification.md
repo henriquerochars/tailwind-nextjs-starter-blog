@@ -18,7 +18,7 @@ The fixture runner copies current source into a directory it owns under the syst
 
 Negative fixtures exercise a missing required field, malformed MDX and an unknown author through the real content command. Positive fixtures include a nested slug, shared and draft-only tags, escaped XML text, an explicit author, rich MDX and enough published posts for pagination.
 
-Artifact checks inspect generated schema, slugs, authors, reading time, TOC, compiled rich MDX, tag counts, local search, main/per-tag RSS, sitemap and prerendered routes. Chromium tests cover home, listing, pagination, post, tags, about, projects, search, mobile navigation, theme persistence and real 404 responses. They run on desktop and mobile viewports. External browser requests are blocked or stubbed and newsletter requests are forbidden. No live analytics, newsletter or comment credentials are required.
+Artifact checks inspect generated schema, slugs, authors, reading time, TOC, compiled rich MDX, tag counts, local search, main/per-tag RSS, sitemap and prerendered routes. Chromium tests cover home, listing, pagination, post, tags, about, projects, search, mobile navigation, theme persistence and real 404 responses. They run on desktop and mobile viewports in Honolulu and Kiritimati time zones. Publication dates render in UTC so the calendar date and hydration stay consistent across server and visitor time zones. External browser requests are blocked or stubbed and newsletter requests are forbidden. No live analytics, newsletter or comment credentials are required.
 
 Failures preserve Playwright screenshots/traces in `test-results/` for CI upload. Fix the failing boundary and rerun the relevant check, then the complete gate for the final candidate.
 

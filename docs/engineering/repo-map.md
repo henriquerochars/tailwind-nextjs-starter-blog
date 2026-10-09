@@ -4,6 +4,7 @@
 | ----------------------------------------------- | ----------------------------------------------------------------------- |
 | `app/`                                          | App Router pages, metadata, sitemap, robots and newsletter API          |
 | `components/`, `layouts/`                       | Shared UI and MDX layouts                                               |
+| `lib/`                                          | Shared publication date formatting in UTC                               |
 | `data/blog/`, `data/authors/`                   | Author-owned MDX sources; preserve their bytes during tooling changes   |
 | `data/siteMetadata.js`                          | Personal identity, links and provider configuration                     |
 | `css/`                                          | Tailwind 4 theme and Prism highlighting, retaining the original palette |

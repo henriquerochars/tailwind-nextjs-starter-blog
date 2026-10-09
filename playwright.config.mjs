@@ -16,7 +16,14 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'desktop', use: { browserName: 'chromium', viewport: { width: 1440, height: 1000 } } },
+    {
+      name: 'desktop',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 1440, height: 1000 },
+        timezoneId: 'Pacific/Honolulu',
+      },
+    },
     {
       name: 'mobile',
       use: {
@@ -24,6 +31,7 @@ export default defineConfig({
         viewport: { width: 390, height: 844 },
         isMobile: true,
         hasTouch: true,
+        timezoneId: 'Pacific/Kiritimati',
       },
     },
   ],
