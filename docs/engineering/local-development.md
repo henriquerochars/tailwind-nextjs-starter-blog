@@ -17,6 +17,33 @@ Corepack can provide the `yarn` command. Without it, replace `yarn <command>` wi
 
 Lint uses ESLint's flat configuration. Formatting is a separate check and intentionally excludes author-owned MDX. Run fixes deliberately with `yarn lint:fix` and `yarn format:fix`. Optional local hooks require `yarn hooks:install`; installation and CI do not install hooks automatically.
 
+## Citations
+
+Posts can reference a local BibTeX file through the `bibliography` frontmatter field. Paths are relative to `data/`, including for nested posts. For example, create `data/references.bib`:
+
+```bibtex
+@book{example2025,
+  title = {Example reference},
+  author = {Example, Alice},
+  year = {2025},
+  publisher = {Example Press}
+}
+```
+
+Reference it from a post:
+
+```mdx
+---
+title: 'Citation example'
+date: '2025-01-01'
+bibliography: 'references.bib'
+---
+
+A supported statement [@example2025].
+```
+
+Citations retain the plugin's default APA style and `en-US` locale. Each citation links to its bibliography entry on the same page. The bibliography appears at the end of the post, includes only cited references and does not duplicate repeated citations. Posts without a bibliography retain their existing behavior. An unreadable bibliography causes `yarn content:build` to fail. The example is for authoring; automated tests create their bibliography and posts only in a temporary copy.
+
 ## Vercel
 
 Vercel can detect Next.js, Yarn and the root `build` script. `package.json` declares `engines.node: 24.x`, which [overrides the Node version in project settings](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions#version-overrides-in-packagejson); `.nvmrc` pins local and CI patch versions. Vercel supplies a supported Node 24 patch rather than promising the exact local patch. Keep the Git integration as the deployment owner; CI does not run another deployment command.

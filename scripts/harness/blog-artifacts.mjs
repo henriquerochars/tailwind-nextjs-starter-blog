@@ -26,8 +26,16 @@ export async function checkArtifacts(directory) {
     'task-list',
     'Rendered MDX component',
     'Fixture image',
+    'csl-bib-body',
+    'Harness reference alpha',
+    'Harness reference beta',
+    '#bib-harness-alpha',
+    '#bib-harness-beta',
   ]) {
     assert.ok(published.body.code.includes(token), `compiled rich MDX contains ${token}`)
+  }
+  for (const token of ['[@harness-alpha]', '[@harness-beta]', 'Harness uncited reference']) {
+    assert.ok(!published.body.code.includes(token), `compiled rich MDX excludes ${token}`)
   }
   assert.equal(published.structuredData['@type'], 'BlogPosting')
   const origin = 'https://henriquerochadevblog.vercel.app'
