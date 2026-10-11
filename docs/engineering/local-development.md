@@ -15,7 +15,21 @@ Corepack can provide the `yarn` command. Without it, replace `yarn <command>` wi
 
 `yarn build` creates a production Webpack build and RSS feeds; `yarn serve` serves it. Webpack remains explicit for Contentlayer2 and the SVG loader. The font is local, so builds do not download Google Fonts.
 
-Lint uses ESLint's flat configuration. Formatting is a separate check and intentionally excludes author-owned MDX. Run fixes deliberately with `yarn lint:fix` and `yarn format:fix`. Optional local hooks require `yarn hooks:install`; installation and CI do not install hooks automatically.
+Lint uses ESLint's flat configuration. Formatting is a separate check and intentionally excludes author-owned MDX. Run fixes deliberately with `yarn lint:fix` and `yarn format:fix`.
+
+## Git hooks
+
+Hooks are optional and require explicit installation in each checkout:
+
+```sh
+node .yarn/releases/yarn-4.18.1.cjs hooks:install
+```
+
+Dependency installation and CI do not activate hooks in their checkout. The pre-commit hook calls the checked-in Yarn launcher directly, so it needs Node on `PATH` but no global Yarn or Corepack shim. Use the pinned Node runtime before committing.
+
+The hook runs `lint-staged` with the repository configuration: ESLint and Prettier fix staged JavaScript/TypeScript, and Prettier formats staged JSON, CSS and Markdown. Corrections are included in the commit. Unfixable lint errors block the commit and restore the index and working tree. For partially staged files, unstaged edits remain outside the commit. Author-owned MDX is excluded from these tasks.
+
+`yarn test:harness` verifies this behavior with real commits in disposable repositories, installing hooks only in those copies. See [verification](verification.md#git-hook-tests).
 
 ## Citations
 

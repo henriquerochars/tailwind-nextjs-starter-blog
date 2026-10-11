@@ -6,11 +6,19 @@ Run `yarn check` from the repository root with the pinned Node runtime and Chrom
 2. `lint:check`: ESLint with zero warnings.
 3. `format:check`: Prettier without writes; excludes author-owned MDX and generated output.
 4. `typecheck`: content generation, Next.js route types and TypeScript.
-5. `test:harness`: portable positive and negative tests for validators, source integrity, process cleanup and CI summary.
+5. `test:harness`: portable positive and negative tests for validators, source integrity, process cleanup, real Git hooks and CI summary.
 6. `build`: the actual personal blog's production build and RSS generation.
 7. `test:blog`: isolated negative content cases, then one shared production fixture build for content and Chromium checks.
 
 The runner hashes tracked and unignored files before and after, even on failure. A source mutation fails the gate. Generated files remain ignored. This is a verification of the current run, without receipts or previous-run reuse.
+
+## Git hook tests
+
+`node --test tests/harness/hooks.test.mjs` exercises the real Husky installation, checked-in hook, Yarn launcher, lint-staged, ESLint and Prettier through `git commit`. The existing harness glob runs these tests locally and in both Linux and macOS CI jobs.
+
+Each test creates a temporary source copy and an independent Git repository with a synthetic identity, no remotes and signing disabled. System/global Git configuration and user Husky initialization are isolated, inherited provider/Git/Husky variables are omitted, and a failing `yarn` sentinel proves the hook does not require an external Yarn executable. The Node runtime executing the test is also used by the hook. Tests install Husky explicitly after a baseline commit, confirm `.husky/_` and its executable wrapper, and never install hooks in the original checkout.
+
+Scenarios verify a successful commit without global Yarn, committed ESLint/Prettier fixes, rejection of an unfixable lint error with HEAD/index/working-tree restoration, preservation of unstaged edits in partially staged files and byte-for-byte preservation of synthetic post/author MDX. Stash cleanup is checked after autocorrection, failure and partial staging. Test-owned process groups have deadlines; temporary directories are removed on success or failure. Source hashes and the original checkout's local Git configuration must remain unchanged.
 
 ## Blog tests
 
