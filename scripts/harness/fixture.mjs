@@ -65,6 +65,29 @@ export async function addContent(directory) {
   )
   await put(
     directory,
+    'data/__harness/references.bib',
+    `@book{harness-alpha,
+  title = {Harness reference alpha},
+  author = {Alpha, Alice},
+  year = {2020},
+  publisher = {Harness Press}
+}
+@book{harness-beta,
+  title = {Harness reference beta},
+  author = {Beta, Bob},
+  year = {2021},
+  publisher = {Harness Press}
+}
+@book{harness-unused,
+  title = {Harness uncited reference},
+  author = {Unused, Uma},
+  year = {2022},
+  publisher = {Harness Press}
+}
+`
+  )
+  await put(
+    directory,
     `data/blog/${publishedSlug}.mdx`,
     `---
 title: '${publishedTitle}'
@@ -72,6 +95,7 @@ date: '2025-03-02'
 tags: ['Harness Shared', 'Harness & XML']
 summary: 'Fixture summary <safe> & checked'
 authors: ['harness-author']
+bibliography: '__harness/references.bib'
 draft: false
 ---
 
@@ -96,6 +120,14 @@ export const verified = true
 ![Fixture image](/static/images/avatar.png)
 
 <div data-harness="rich">Rendered MDX component</div>
+
+## Harness citations
+
+First reference [@harness-alpha].
+
+Second reference [@harness-beta].
+
+Repeated reference [@harness-alpha].
 `
   )
   await put(

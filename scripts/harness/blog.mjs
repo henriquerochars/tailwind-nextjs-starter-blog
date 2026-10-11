@@ -35,6 +35,11 @@ try {
       '---\ntitle: Unknown author\ndate: 2025-01-01\nauthors: [missing-author]\n---\n\nUnknown author.',
       /Unknown author missing-author/,
     ],
+    [
+      'missing bibliography',
+      '---\ntitle: Missing bibliography\ndate: 2025-01-01\nbibliography: __harness/missing.bib\n---\n\nMissing reference [@harness-missing].',
+      /__harness-invalid\.mdx[\s\S]*Cannot read non valid bibliography URL in node env\./,
+    ],
   ]
   for (const [name, source, expected] of negativeCases) {
     await rm(path.join(directory, '.contentlayer'), { recursive: true, force: true })
