@@ -6,7 +6,8 @@ import { localeMetadata } from '@/lib/i18n/metadata'
 export function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'es' }]
 }
-export const dynamicParams = false
+// Validate locale values in the layout; unknown article slugs must reach the localized 404 boundary.
+export const dynamicParams = true
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   if (!isLocale(locale) || locale === 'pt-BR') notFound()

@@ -127,19 +127,21 @@ test('localized public indices, feeds, search and draft boundaries', async ({
     await input.fill(language.title)
     await page.getByRole('dialog').getByRole('link', { name: language.title, exact: true }).click()
     await expect(page).toHaveURL(new RegExp(`${language.prefix}/blog/first-post$`))
-    const route = `${language.prefix}/blog/${draftSlug}`
-    browserDiagnostics.expectDocument404(route)
-    expect((await page.goto(route)).status()).toBe(404)
-    expect(await page.content()).not.toContain(draftTitle)
-    await expect(page.locator('html')).toHaveAttribute('lang', language.locale)
-    await expect(
-      page.getByText(
-        language.locale === 'en'
-          ? "Sorry we couldn't find this page."
-          : 'No encontramos esta página.',
-        { exact: true }
-      )
-    ).toBeVisible()
+    for (const slug of [draftSlug, 'does-not-exist']) {
+      const route = `${language.prefix}/blog/${slug}`
+      browserDiagnostics.expectDocument404(route)
+      expect((await page.goto(route)).status()).toBe(404)
+      expect(await page.content()).not.toContain(draftTitle)
+      await expect(page.locator('html')).toHaveAttribute('lang', language.locale)
+      await expect(
+        page.getByText(
+          language.locale === 'en'
+            ? "Sorry we couldn't find this page."
+            : 'No encontramos esta página.',
+          { exact: true }
+        )
+      ).toBeVisible()
+    }
   }
 })
 
