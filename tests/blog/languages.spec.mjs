@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.mjs'
+import { test, expect, openSearch } from './fixtures.mjs'
 import { publishedSlug, draftSlug, draftTitle } from '../../scripts/harness/fixture.mjs'
 
 const origin = 'https://henriquerochadevblog.vercel.app'
@@ -122,7 +122,7 @@ test('localized public indices, feeds, search and draft boundaries', async ({
     expect(await feed.text()).toContain(language.title)
     expect(await feed.text()).not.toContain(draftTitle)
     await page.goto(`${language.prefix}/`)
-    await page.keyboard.press(process.platform === 'darwin' ? 'Meta+k' : 'Control+k')
+    await openSearch(page)
     const input = page.getByRole('searchbox')
     await input.fill(language.title)
     await page.getByRole('dialog').getByRole('link', { name: language.title, exact: true }).click()
@@ -151,7 +151,7 @@ test('local search restores focus and handles unavailable or malformed indices',
   await page.goto('/en')
   const selector = page.getByRole('combobox', { name: 'Select language' })
   await selector.focus()
-  await page.keyboard.press(process.platform === 'darwin' ? 'Meta+k' : 'Control+k')
+  await openSearch(page)
   await page.getByRole('searchbox').fill('anything')
   await page.keyboard.press('Escape')
   await expect(page.getByRole('dialog')).toBeHidden()
@@ -165,7 +165,7 @@ test('local search restores focus and handles unavailable or malformed indices',
       route.fulfill({ contentType: 'application/json', body })
     )
     await page.reload()
-    await page.keyboard.press(process.platform === 'darwin' ? 'Meta+k' : 'Control+k')
+    await openSearch(page)
     await expect(page.getByRole('status')).toHaveText('Unable to load search.')
     await page.keyboard.press('Escape')
     await page.unroute('**/search.en.json')
@@ -178,6 +178,6 @@ test('local search restores focus and handles unavailable or malformed indices',
         : original(input, options)
   })
   await page.reload()
-  await page.keyboard.press(process.platform === 'darwin' ? 'Meta+k' : 'Control+k')
+  await openSearch(page)
   await expect(page.getByRole('status')).toHaveText('Unable to load search.')
 })

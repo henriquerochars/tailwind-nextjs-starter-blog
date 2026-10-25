@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.mjs'
+import { test, expect, openSearch } from './fixtures.mjs'
 import {
   umamiWebsiteId,
   oldestSlug,
@@ -102,7 +102,7 @@ test('Portfolio Page navigation displays the local portfolio favicon', async ({
 
 test('local search opens by keyboard and finds a published post', async ({ page }) => {
   await page.goto('/')
-  await page.keyboard.press(process.platform === 'darwin' ? 'Meta+k' : 'Control+k')
+  await openSearch(page)
   const input = page.getByPlaceholder(/buscar/i)
   await expect(input).toBeVisible()
   await input.fill('Harness published')

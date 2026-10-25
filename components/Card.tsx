@@ -7,6 +7,7 @@ import Link from './Link'
 
 const Card = ({ title, description, imgSrc, href }) => {
   const t = useMessages()
+  // Showcase cards may link to example routes that are not published articles.
   return (
     <div className="md max-w-[544px] p-4 md:w-1/2">
       <div
@@ -16,7 +17,11 @@ const Card = ({ title, description, imgSrc, href }) => {
       >
         {imgSrc &&
           (href ? (
-            <Link href={href} aria-label={`${t.linkTo} ${title}`}>
+            <Link
+              prefetch={href.startsWith('/') ? false : undefined}
+              href={href}
+              aria-label={`${t.linkTo} ${title}`}
+            >
               <Image
                 alt={title}
                 src={imgSrc}
@@ -37,7 +42,11 @@ const Card = ({ title, description, imgSrc, href }) => {
         <div className="p-6">
           <h2 className="mb-3 text-2xl leading-8 font-bold tracking-tight">
             {href ? (
-              <Link href={href} aria-label={`${t.linkTo} ${title}`}>
+              <Link
+                prefetch={href.startsWith('/') ? false : undefined}
+                href={href}
+                aria-label={`${t.linkTo} ${title}`}
+              >
                 {title}
               </Link>
             ) : (
@@ -47,6 +56,7 @@ const Card = ({ title, description, imgSrc, href }) => {
           <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">{description}</p>
           {href && (
             <Link
+              prefetch={href.startsWith('/') ? false : undefined}
               href={href}
               className="text-base leading-6 font-medium text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
               aria-label={`${t.linkTo} ${title}`}
