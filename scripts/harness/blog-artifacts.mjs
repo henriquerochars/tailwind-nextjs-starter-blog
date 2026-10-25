@@ -82,12 +82,32 @@ export async function checkArtifacts(directory) {
       'canonical RSS origins'
     )
   }
-  assert.equal((mainFeed.match(/<item>/g) || []).length, publicPosts.length)
-  assert.equal((tagFeed.match(/<item>/g) || []).length, 7)
+  assert.equal((mainFeed.match(/<item(?: [^>]*)?>/g) || []).length, publicPosts.length)
+  assert.equal((tagFeed.match(/<item(?: [^>]*)?>/g) || []).length, 7)
   assert.match(tagFeed, /atom:link href="[^"]+\/tags\/harness-shared\/feed\.xml"/)
+  for (const locale of ['pt-BR', 'en', 'es']) {
+    const index = await json(directory, `public/search.${locale}.json`)
+    assert.equal(index.length, publicPosts.length)
+    assert.ok(
+      index.every((post) => post.path.startsWith(`${locale === 'pt-BR' ? '' : `${locale}/`}blog/`))
+    )
+    assert.ok(!JSON.stringify(index).includes('Harness translated secret draft'))
+    const feed = await readFile(
+      path.join(directory, 'public', locale === 'pt-BR' ? '' : locale, 'feed.xml'),
+      'utf8'
+    )
+    assert.ok(!feed.includes('Harness translated secret draft'))
+    assert.ok(feed.includes('<item xml:lang="pt-BR">'), 'fallback items declare source language')
+    if (locale !== 'pt-BR')
+      assert.ok(
+        feed.includes(`<item xml:lang="${locale}">`),
+        'translated items declare translated language'
+      )
+  }
   const prerender = await json(directory, '.next/prerender-manifest.json')
   assert.ok(prerender.routes[`/blog/${publishedSlug}`])
   assert.ok(!prerender.routes[`/blog/${draftSlug}`])
+  for (const locale of ['en', 'es']) assert.ok(!prerender.routes[`/${locale}/blog/${draftSlug}`])
   assert.ok(!prerender.routes['/tags/harness-draft-only'])
   for (const post of publicPosts) assert.ok(prerender.routes[`/blog/${post.slug}`])
   const sitemap = await readFile(path.join(directory, '.next/server/app/sitemap.xml.body'), 'utf8')
@@ -102,6 +122,13 @@ export async function checkArtifacts(directory) {
       `${origin}/blog`,
       `${origin}/projects`,
       `${origin}/tags`,
+      `${origin}/about`,
+      ...['en', 'es'].flatMap((locale) => [
+        ...['', '/blog', '/projects', '/tags', '/about'].map(
+          (route) => `${origin}/${locale}${route}`
+        ),
+        ...publicPosts.map((post) => `${origin}/${locale}/blog/${post.slug}`),
+      ]),
       ...publicPosts.map((post) => `${origin}/blog/${post.slug}`),
     ].sort()
   )

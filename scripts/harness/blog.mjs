@@ -55,6 +55,41 @@ try {
     if (interrupted) throw new Error('Blog test interrupted')
     console.log(`Negative content fixture passed: ${name}`)
   }
+  const translationPath = 'data/translations/en/blog/__harness-invalid.mdx'
+  const translationCases = [
+    [
+      'duplicate translation',
+      'locale: en\ntranslationKey: first-post',
+      /Duplicate translation: en:first-post/,
+    ],
+    [
+      'orphan translation',
+      'locale: en\ntranslationKey: missing-source',
+      /Unknown translation source: en:missing-source/,
+    ],
+    [
+      'translation locale mismatch',
+      'locale: pt-BR\ntranslationKey: first-post',
+      /Translation locale\/path mismatch: pt-BR:first-post/,
+    ],
+  ]
+  for (const [name, fields, expected] of translationCases) {
+    await rm(path.join(directory, '.contentlayer'), { recursive: true, force: true })
+    await put(
+      directory,
+      translationPath,
+      `---\n${fields}\ntitle: Invalid translation\n---\n\nInvalid translated content.`
+    )
+    await assert.rejects(
+      runNode(['scripts/content.mjs'], { cwd: directory, env, capture: true }),
+      (error) => {
+        assert.match(error.output || '', expected, `negative fixture: ${name}`)
+        return true
+      }
+    )
+    await rm(path.join(directory, translationPath))
+    console.log(`Negative content fixture passed: ${name}`)
+  }
   await rm(path.join(directory, '.contentlayer'), { recursive: true, force: true })
   await addContent(directory)
   await runYarn(['build'], { cwd: directory, env, timeout: 300000 })

@@ -1,11 +1,15 @@
 'use client'
 
+import { useLocale, useMessages } from '@/lib/i18n/LocaleProvider'
+
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
 
 const MobileNav = () => {
+  const t = useMessages()
+  const locale = useLocale()
   const [navShow, setNavShow] = useState(false)
 
   const onToggleNav = () => {
@@ -29,7 +33,7 @@ const MobileNav = () => {
   return (
     <>
       <button
-        aria-label="Toggle Menu"
+        aria-label={t.menu}
         aria-expanded={navShow}
         aria-controls="mobile-navigation"
         onClick={onToggleNav}
@@ -57,7 +61,7 @@ const MobileNav = () => {
         }`}
       >
         <div className="flex justify-end">
-          <button className="mt-11 mr-8 h-8 w-8" aria-label="Close Menu" onClick={onToggleNav}>
+          <button className="mt-11 mr-8 h-8 w-8" aria-label={t.closeMenu} onClick={onToggleNav}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -74,9 +78,16 @@ const MobileNav = () => {
         </div>
         <nav className="fixed mt-8 h-full">
           {headerNavLinks.map((link) => (
-            <div key={link.title} className="px-12 py-4">
+            <div
+              key={link.href === '/' ? t.home : link.href === '/blog' ? t.blog : t.portfolio}
+              className="px-12 py-4"
+            >
               <Link
-                href={link.href}
+                href={
+                  link.href.startsWith('https://henriquerochadev.vercel.app')
+                    ? `https://henriquerochadev.vercel.app${locale === 'en' ? '/' : locale === 'es' ? '/es' : '/pt-br'}`
+                    : link.href
+                }
                 className="flex items-center gap-3 text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
                 onClick={onToggleNav}
               >
@@ -90,7 +101,7 @@ const MobileNav = () => {
                     className="shrink-0"
                   />
                 )}
-                {link.title}
+                {link.href === '/' ? t.home : link.href === '/blog' ? t.blog : t.portfolio}
               </Link>
             </div>
           ))}

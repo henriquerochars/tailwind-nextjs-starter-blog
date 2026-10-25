@@ -56,6 +56,20 @@ export const publishedTitle = 'Harness published & verified'
 export const draftTitle = 'Harness secret draft'
 
 export async function addContent(directory) {
+  await put(
+    directory,
+    'data/translations/en/blog/__harness-draft.mdx',
+    `---
+locale: en
+translationKey: ${draftSlug}
+title: Harness translated secret draft
+summary: Translated draft must remain private
+---
+
+Private translated draft body.
+`
+  )
+
   // A prior published tag must not leave a stale feed after it becomes draft-only.
   await put(directory, 'public/tags/harness-draft-only/feed.xml', draftTitle)
   await put(

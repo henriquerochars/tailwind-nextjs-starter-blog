@@ -1,11 +1,14 @@
 'use client'
 
+import { useMessages } from '@/lib/i18n/LocaleProvider'
+
 import { useSyncExternalStore } from 'react'
 import { useTheme } from 'next-themes'
 
 const subscribe = () => () => {}
 
 const ThemeSwitch = () => {
+  const t = useMessages()
   const mounted = useSyncExternalStore(
     subscribe,
     () => true,
@@ -19,7 +22,7 @@ const ThemeSwitch = () => {
 
   return (
     <button
-      aria-label="Toggle Dark Mode"
+      aria-label={t.theme}
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
     >
       <svg

@@ -27,6 +27,10 @@
     {
       "path": "docs/engineering/integrations.md",
       "purpose": "Canonical URLs, disabled integrations, optional analytics and CSP"
+    },
+    {
+      "path": "docs/engineering/languages.md",
+      "purpose": "Language routes, shared selector, translated content and locale artifacts"
     }
   ]
 }
