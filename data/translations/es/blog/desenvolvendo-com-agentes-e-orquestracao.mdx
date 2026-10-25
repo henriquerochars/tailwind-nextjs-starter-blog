@@ -1,0 +1,46 @@
+---
+locale: es
+translationKey: desenvolvendo-com-agentes-e-orquestracao
+title: Desarrollando con agentes, proyectos personales y orquestación
+summary: Algunas experiencias con Codex, Claude y la división del trabajo entre agentes, empezando por mis experimentos con Godot.
+---
+
+He estado usando mucho Codex y Claude para experimentar con gamedev. Estoy construyendo dos proyectos de código abierto: [Cozinha em Caos](https://github.com/henriquerochars/cozinha-em-caos) y [Feira Livre Simulator](https://github.com/henriquerochars/feira-livre-simulator). Entre ellos, Feira Livre Simulator es el experimento con Godot.
+
+Para desarrollar estos proyectos, estoy usando T3 y logrando orquestar a Astra y Fable juntos. También pienso probar Orca para hacer esto. Intento aprovechar siempre mis tokens al máximo, manteniéndolos en uso todo el tiempo para avanzar en mis proyectos personales, incluso mediante el remote control. Cuando el reinicio se acerca y todavía me queda límite disponible, aprovecho para experimentar con algo más.
+
+Eso termina siendo una oportunidad para probar una combinación diferente, pero gastar el límite no me dice si el trabajo fue bueno. Todavía tengo que mirar lo que se hizo, entender las decisiones y decidir qué tiene sentido continuar. Esa es la parte del uso de agentes que quiero registrar aquí, siguiendo la idea del blog como un diario técnico.
+
+Todavía estoy formando mis opiniones. Los nombres y niveles de esfuerzo que voy a mencionar son los que estoy usando en estos experimentos, y las preferencias son mis impresiones de ahora. Son impresiones de uso, no resultados de una comparación controlada entre todos estos modelos.
+
+## Un proyecto personal como espacio para experimentar
+
+Una de las cosas que me interesan de los proyectos personales es poder aprender mientras intento hacer que algo funcione. Puedo cambiar de opinión, explorar una herramienta o dedicar más tiempo a una pregunta que apareció en el camino. Con Godot, ese espacio también me ha servido para experimentar cómo quiero trabajar con los agentes.
+
+Hay mucho que observar además del código que aparece al final. ¿Cómo explicar la tarea? ¿Cuánto contexto pasar? ¿Cuándo pedir una segunda opinión? ¿Vale la pena dejar que el mismo agente implemente y revise todo? Son preguntas que se vuelven más interesantes cuando hay un proyecto en el que trabajar, con decisiones que voy a tener que entender después.
+
+También quiero tener cuidado de que la experimentación con modelos no ocupe todo el espacio del proyecto. Es fácil tener una combinación más para probar. Lo que me interesa es descubrir cuáles de esas combinaciones ayudan a desarrollar y aprender, y poder explicar por qué.
+
+## Separando los roles
+
+Astra en High o xHigh ha sido mi preferencia para orquestar trabajos más grandes. En mi experiencia, mantiene bien las instrucciones y los roles que elegí para cada modelo, además de lograr sortear obstáculos durante el trabajo. Eso pesa bastante cuando quiero dividir una tarea y seguir acompañando la dirección general.
+
+Fable 5.1 en Medium o High ha sido muy bueno como segunda opinión. Me gusta usarlo para revisar decisiones e intentar refutar una idea mía. Quiero que haya espacio para discrepar: si la propuesta tiene un problema, prefiero descubrirlo mientras todavía estoy discutiendo cómo hacerlo.
+
+Para la auditoría técnica, Sol 6.1 en Medium ha encajado muy bien. Hoy, en mi experiencia, me gusta más este uso que la revisión automática de PR de Codex. Puedo hacer el ida y vuelta de revisión y corrección localmente, sin tener que subir el cambio, esperar al bot y después volver para ajustar. He sentido que la respuesta llega más rápido de esta manera.
+
+Sonnet 5.5 entra para conducir partes más acotadas del trabajo, que pueden haber sido divididas por Astra, Fable u Opus. Luna en Extra High, en cambio, ha funcionado bien para la implementación y los ciclos de validación local, con un costo bajo según mi percepción. Me ha gustado bajo la coordinación de Sonnet 5.5, Opus 5.5 o Astra.
+
+Para investigación y resúmenes, he usado Haiku 5.5. La idea es que el agente responsable de la orquestación reciba una síntesis y pueda trabajar a partir de ella. Aun así, un resumen tiene que traer suficiente información para que yo pueda verificar una decisión cuando sea importante.
+
+Estos roles son un punto de partida para mis pruebas. Todavía quiero entender mejor cuándo una división así ayuda y cuándo solo estoy agregando un traspaso más de contexto.
+
+## El trabajo entre una tarea y otra
+
+Orquestar implica decidir qué necesita recibir cada agente y qué debe devolver. Si pido una revisión, quiero saber qué se encontró y por qué importa. Si pido una implementación, necesito poder mirar el cambio y la validación que se hizo. Un mensaje que diga que terminó no responde todo eso.
+
+Es una parte que me llama la atención porque la autonomía necesita venir acompañada de una forma de verificar el resultado. Quiero poder delegar una tarea sin seguir cada paso, pero seguir entendiendo qué cambió. Y, si una verificación falla o no se puede hacer, necesito saberlo también.
+
+Otra duda es cuánto de esta coordinación debe quedar conmigo. Tener un modelo que organice las tareas parece útil, sobre todo en los trabajos más grandes. Al mismo tiempo, necesito poder darme cuenta cuando la dirección elegida dejó de tener sentido. Una buena segunda opinión puede ayudar ahí, siempre que no se convierta en una respuesta más que simplemente concuerda con la primera.
+
+Por ahora, quiero observar mejor este punto en los experimentos con Godot: cuándo dividir el trabajo ayuda a avanzar y cuándo sería más simple continuar en una sola conversación. También quiero entender qué aprendo con cada intento, porque terminar un cambio sin poder explicar las decisiones deja una parte importante del proyecto personal en el camino.
