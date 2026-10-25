@@ -66,6 +66,8 @@ test('localized navigation, dates, full second article and source fallback stay 
   for (const language of languages.slice(1)) {
     await page.goto(`${language.prefix}/`)
     await expect(page.locator('h1')).toHaveText(language.heading)
+    // Synthetic tag membership keeps this fixed-date assertion independent of new real posts.
+    await page.goto(`${language.prefix}/tags/harness-shared`)
     await expect(page.locator('main time').first()).toHaveText(
       language.locale === 'en' ? 'March 2, 2025' : '2 de marzo de 2025'
     )

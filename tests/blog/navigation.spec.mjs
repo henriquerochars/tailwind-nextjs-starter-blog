@@ -1,20 +1,34 @@
 import { test, expect, openSearch } from './fixtures.mjs'
 import {
   umamiWebsiteId,
-  oldestSlug,
   publishedSlug,
   publishedTitle,
   draftSlug,
   draftTitle,
 } from '../../scripts/harness/fixture.mjs'
 
-test('home navigates to a nested post with rich MDX', async ({ page }) => {
+async function publishedPosts(request) {
+  // Artifact checks separately verify that this index contains every published source post.
+  const response = await request.get('/search.json')
+  expect(response.status()).toBe(200)
+  return (await response.json()).sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+}
+
+test('home lists the latest posts and search navigates to a nested post with rich MDX', async ({
+  page,
+  request,
+}) => {
+  const posts = await publishedPosts(request)
   await page.goto('/')
   await expect(page.getByRole('heading', { name: 'Últimas postagens', exact: true })).toBeVisible()
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR')
   await expect(page.getByText(draftTitle, { exact: true })).toHaveCount(0)
-  await expect(page.locator('main time').first()).toHaveText('2 de março de 2025')
-  await page.locator('main').getByRole('link', { name: publishedTitle, exact: true }).click()
+  await expect(page.locator('main article h2 a')).toHaveText(
+    posts.slice(0, 5).map((post) => post.title)
+  )
+  await openSearch(page)
+  await page.getByRole('searchbox').fill(publishedTitle)
+  await page.getByRole('dialog').getByRole('link', { name: publishedTitle, exact: true }).click()
   await expect(page).toHaveURL(new RegExp(`/blog/${publishedSlug}$`))
   await expect(page.getByRole('heading', { name: publishedTitle, exact: true })).toBeVisible()
   await expect(page.locator('main time').first()).toHaveText('domingo, 2 de março de 2025')
@@ -33,13 +47,17 @@ test('home navigates to a nested post with rich MDX', async ({ page }) => {
   )
 })
 
-test('listing paginates published posts and returns to page one', async ({ page }) => {
+test('listing paginates published posts and returns to page one', async ({ page, request }) => {
+  const posts = await publishedPosts(request)
   await page.goto('/blog')
-  await expect(page.locator('main article')).toHaveCount(5)
-  await expect(page.locator('main time').first()).toHaveText('2 de março de 2025')
+  await expect(page.locator('main article h2 a')).toHaveText(
+    posts.slice(0, 5).map((post) => post.title)
+  )
   await page.getByRole('link', { name: 'Próxima', exact: true }).click()
   await expect(page).toHaveURL(/\/blog\/page\/2$/)
-  await expect(page.locator('main article')).toHaveCount(5)
+  await expect(page.locator('main article h2 a')).toHaveText(
+    posts.slice(5, 10).map((post) => post.title)
+  )
   await expect(page.getByText(draftTitle, { exact: true })).toHaveCount(0)
   await page.getByRole('link', { name: 'Anterior', exact: true }).click()
   await expect(page).toHaveURL(/\/blog\/?$/)
@@ -50,6 +68,7 @@ test('tag pages contain published matches and a working feed', async ({ page, re
   await page.locator('a[href="/tags/harness-shared"]').first().click()
   await expect(page).toHaveURL(/\/tags\/harness-shared$/)
   await expect(page.locator('main article')).toHaveCount(7)
+  await expect(page.locator('main time').first()).toHaveText('2 de março de 2025')
   await expect(page.getByText(draftTitle, { exact: true })).toHaveCount(0)
   const response = await request.get('/tags/harness-shared/feed.xml')
   expect(response.status()).toBe(200)
@@ -158,24 +177,26 @@ test('configured Umami loads its local stub under the production CSP', async ({ 
   await expect(tracker).toHaveAttribute('data-domains', 'henriquerochadevblog.vercel.app')
 })
 
-test('previous and next links navigate published posts and respect the ends', async ({ page }) => {
+test('previous and next links navigate published posts and respect the ends', async ({
+  page,
+  request,
+}) => {
+  const posts = await publishedPosts(request)
   const articleLink = (heading) =>
     page.getByRole('heading', { name: heading, exact: true }).locator('..').getByRole('link')
-  await page.goto(`/blog/${publishedSlug}`)
+  await page.goto(`/blog/${posts[0].slug}`)
   await expect(page.getByRole('heading', { name: 'Próximo artigo', exact: true })).toHaveCount(0)
   const previous = articleLink('Artigo anterior')
-  await expect(previous).toHaveAttribute('href', '/blog/__harness/post-6')
+  await expect(previous).toHaveAttribute('href', `/blog/${posts[1].slug}`)
   await previous.click()
-  await expect(page).toHaveURL(/\/blog\/__harness\/post-6$/)
-  await expect(
-    page.getByRole('heading', { name: 'Harness pagination 6', exact: true })
-  ).toBeVisible()
-  await expect(articleLink('Artigo anterior')).toHaveAttribute('href', '/blog/__harness/post-5')
+  await expect(page).toHaveURL(new URL(`/blog/${posts[1].slug}`, page.url()).href)
+  await expect(page.getByRole('heading', { name: posts[1].title, exact: true })).toBeVisible()
+  await expect(articleLink('Artigo anterior')).toHaveAttribute('href', `/blog/${posts[2].slug}`)
   const next = articleLink('Próximo artigo')
-  await expect(next).toHaveAttribute('href', `/blog/${publishedSlug}`)
+  await expect(next).toHaveAttribute('href', `/blog/${posts[0].slug}`)
   await next.click()
-  await expect(page.getByRole('heading', { name: publishedTitle, exact: true })).toBeVisible()
-  await page.goto(`/blog/${oldestSlug}`)
+  await expect(page.getByRole('heading', { name: posts[0].title, exact: true })).toBeVisible()
+  await page.goto(`/blog/${posts.at(-1).slug}`)
   await expect(page.getByRole('heading', { name: 'Artigo anterior', exact: true })).toHaveCount(0)
   const newer = articleLink('Próximo artigo')
   const title = await newer.textContent()
