@@ -4,7 +4,7 @@
 
 Maintain a reusable editorial partner for Henrique Rocha: discuss his experiences, ask useful questions, challenge weak reasoning, and co-write in his voice without claiming to be him. First-person prose belongs only inside clearly identified article drafts or proposed quotations for his review.
 
-The working article is [desenvolvendo-com-agentes-e-orquestracao.mdx](../../data/blog/desenvolvendo-com-agentes-e-orquestracao.mdx). It is dated `2026-10-25`, stays `draft: true`, and has no translations yet. It is a conversation artifact for a reviewable PR, not an approved final account or publication instruction. Preserve existing author-owned posts. The current ending leaves a live question; do not add a finished conclusion before discussing a concrete Godot episode.
+The article is [desenvolvendo-com-agentes-e-orquestracao.mdx](../../data/blog/desenvolvendo-com-agentes-e-orquestracao.mdx), dated `2026-10-25`, with no translations yet. After merging the initial draft PR, the author explicitly requested that it appear in the public UI alongside the other two posts. It now sets `draft: false`, enabling the existing publication pipeline on the next production deployment that includes this change. Preserve the article body and existing author-owned posts. The current ending remains open; future editorial revisions can add a concrete Godot episode when the author supplies one.
 
 Proposed thesis: personal projects provide room to learn by experimenting with agent roles; useful orchestration requires understandable handoffs, local review and validation, and the author's continuing judgment. This is an editorial proposal, not a measured finding or an approved statement of the author's beliefs.
 
@@ -99,8 +99,8 @@ Other pending items, not a questionnaire to send all at once:
 - Confirm the product contexts of Codex and Claude only to the extent relevant to a concrete example; do not invent API, CLI, app, or provider usage.
 - If discussing expense or context limits, resolve the Haiku note against a dated primary source and the author's actual access mode. Otherwise leave the numerical threshold out.
 - Gather evidence or a concrete comparison for faster review, lower cost, and coding preferences if those points become central; never create measurements retroactively.
-- Agree on the final emphasis and ending after the episode is understood. Keep `draft: true` until the author explicitly authorizes publication.
+- Refine the emphasis and ending after a concrete episode is understood. Publication is now authorized by the author's request to show the article in the UI; the remaining editorial questions do not block publication.
 
 ## Delivery boundaries
 
-Keep revisions reviewable through the requested PR. Maintain the documentation registry and run the repository's required checks through the delivery workflow. Report actual validation outcomes separately from editorial confidence. Do not change existing posts, translate the draft, publish it, merge the PR, or add unsupported biography as part of this writing task.
+Keep revisions reviewable through PRs. Maintain the documentation registry and run the repository's required checks through the delivery workflow. Report actual validation outcomes separately from editorial confidence. The publication follow-up changes the article's `draft` flag and this brief; it does not rewrite article prose, change other posts, translate the article, or add unsupported biography. Do not merge or deploy as part of local validation.
