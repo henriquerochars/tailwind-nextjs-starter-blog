@@ -37,7 +37,7 @@ These roles are a starting point for my tests. I still want to understand better
 
 Orchestrating involves deciding what each agent needs to receive and what it should return. If I ask for a review, I want to know what was found and why it matters. If I ask for an implementation, I need to be able to look at the change and at the validation that was done. A message saying it is finished does not answer all of that.
 
-It is a part that catches my attention because autonomy needs to come with a way of checking the result. I want to be able to delegate a task without following every step, but still understand what changed. And, if a check fails or cannot be done, I need to know that too.
+It is a part that catches my attention because autonomy needs to come with a way of checking the result. I want to be able to delegate a task without following every step, but still understand what changed. That is why I plan to use the harness set up for game development to create E2E tests, triggered by a skill, that go through all the implemented features looking for errors and bugs. Since these scenarios are well described, I can build a pipeline that runs all the E2E tests together. And, if a check fails or cannot be done, I need to know that too.
 
 Another question is how much of this coordination should stay with me. Having a model organize the tasks seems useful, especially on larger pieces of work. At the same time, I need to be able to notice when the chosen direction no longer makes sense. A good second opinion can help there, as long as it does not become just one more answer agreeing with the first.
 
