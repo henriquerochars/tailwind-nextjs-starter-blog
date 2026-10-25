@@ -192,6 +192,12 @@ test('site header stays pinned as a solid single-row bar above in-page anchors',
 
   await page.setViewportSize({ width: 320, height: 640 })
   await expect.poll(async () => (await header.boundingBox()).height).toBe(box.height)
+  const bar = header.locator(':scope > div')
+  expect(await bar.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true)
+  expect(
+    await bar.evaluate((element) => element.getBoundingClientRect().right)
+  ).toBeLessThanOrEqual(320)
+  await page.goto('/')
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320)
 
   await page.getByRole('button', { name: 'Alternar modo escuro', exact: true }).click()
