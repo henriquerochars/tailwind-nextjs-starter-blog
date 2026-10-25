@@ -1,0 +1,44 @@
+---
+locale: en
+translationKey: desenvolvendo-com-agentes-e-orquestracao
+title: Developing with agents, personal projects and orchestration
+summary: Some experiences with Codex, Claude and dividing work between agents, starting with my experiments with Godot.
+---
+
+I have been using Codex and Claude a lot to experiment with gamedev. I am building two open source projects: [Cozinha em Caos](https://github.com/henriquerochars/cozinha-em-caos) and [Feira Livre Simulator](https://github.com/henriquerochars/feira-livre-simulator). Of the two, Feira Livre Simulator is the Godot experiment.
+
+To develop these projects, I am using T3 and managing to orchestrate Astra and Fable together. I also plan to try Orca for this. I always try to get the most out of my tokens, keeping them in use all the time to move my personal projects forward, including through remote control. When the reset is coming up and I still have some usage limit left, I take the chance to experiment with something else.
+
+That ends up being an opportunity to test orchestrations with different models and reasoning levels, without always depending on the best model available, such as Astra and Fable together. By varying the combinations, I have been getting good results, often without spending that many tokens. Even so, sometimes it is interesting to run only the best models at full throttle, orchestrated together, just to see what comes out, haha. But spending the limit does not tell me whether the work was good. I still need to look at what was done, understand the decisions and decide what makes sense to continue. That is the part of using agents that I want to record here, following the idea of the blog as a technical diary.
+
+I am still forming my opinions. The names and effort levels I will mention are the ones I am using in these experiments, and the preferences are my impressions right now. They are impressions from using these models, not the results of a controlled comparison between all of them.
+
+## A personal project as a space to experiment
+
+One of the things that interests me about personal projects is being able to learn while trying to make something work. I can change my mind, explore a tool or spend more time on a question that came up along the way. With Godot, that space has also been useful for experimenting with how I want to work with agents.
+
+There is a lot to observe beyond the code that shows up at the end. How do I explain the task? How much context should I give? When should I ask for a second opinion? Is it worth letting the same agent implement and review everything? These questions get more interesting when there is a project to work on.
+
+## Separating the roles
+
+Astra at High or xHigh has been my preference for orchestrating larger pieces of work. In my experience, it keeps the instructions and the roles I chose for each model well, and it manages to work around obstacles along the way. That matters a lot when I want to split up a task and keep following the overall direction.
+
+Fable 5.1 at Medium or High has been very good as a second opinion. I like using it to review decisions and try to refute an idea of mine. I want there to be room to disagree: if a proposal has a problem, I would rather find out while I am still discussing how to do it.
+
+For technical audits, Sol 6.1 at Medium has been a very good fit. Today, in my experience, I like this use more than Codex's automatic PR review. I can go back and forth between review and fixes locally, without having to push the change, wait for the bot and then come back to adjust things. I have felt that the feedback comes faster this way.
+
+Sonnet 5.5 comes in to handle more bounded parts of the work, which may have been split up by Astra, Fable or Opus. Luna at Extra High, on the other hand, has worked well for implementation and local validation cycles, at a low cost in my perception. I have enjoyed it under the coordination of Sonnet 5.5, Opus 5.5 or Astra.
+
+For research and summaries, I have been using Haiku 5.5. The idea is that the agent in charge of orchestration receives a synthesis and can work from it. Even so, a summary needs to carry enough information for me to be able to check a decision when it matters.
+
+These roles are a starting point for my tests. I still want to understand better when a division like this helps and when I am just adding one more handoff of context.
+
+## The work between one task and another
+
+Orchestrating involves deciding what each agent needs to receive and what it should return. If I ask for a review, I want to know what was found and why it matters. If I ask for an implementation, I need to be able to look at the change and at the validation that was done. A message saying it is finished does not answer all of that.
+
+It is a part that catches my attention because autonomy needs to come with a way of checking the result. I want to be able to delegate a task without following every step, but still understand what changed. That is why I plan to use the harness set up for game development to create E2E tests, triggered by a skill, that go through all the implemented features looking for errors and bugs. Since these scenarios are well described, I can build a pipeline that runs all the E2E tests together. And, if a check fails or cannot be done, I need to know that too.
+
+Another question is how much of this coordination should stay with me. Having a model organize the tasks seems useful, especially on larger pieces of work. At the same time, I need to be able to notice when the chosen direction no longer makes sense. A good second opinion can help there, as long as it does not become just one more answer agreeing with the first.
+
+For now, I want to observe this point more closely in these experiments: when dividing the work helps move forward and when it would be simpler to stay in a single conversation. The experiments are happening on two fronts. I am using Godot and React Native to develop games for desktop and mobile, iOS and Android, comparing the engine with the framework and testing the solutions available in each. With React Native, I benefit from having worked with the React ecosystem in the industry for many years. Godot, on the other hand, is a new experience of working with an engine, and it is also open source, which makes me want to try contributing to the project in the future. I also want to understand what I learn from each attempt, because finishing a change without being able to explain the decisions leaves an important part of the personal project behind.

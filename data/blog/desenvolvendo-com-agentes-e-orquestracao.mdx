@@ -8,9 +8,9 @@ summary: Algumas experiências com Codex, Claude e a divisão de trabalho entre 
 
 Tenho usado bastante Codex e Claude para experimentar com gamedev. Estou construindo dois projetos open source: [Cozinha em Caos](https://github.com/henriquerochars/cozinha-em-caos) e [Feira Livre Simulator](https://github.com/henriquerochars/feira-livre-simulator). Entre eles, o Feira Livre Simulator é o experimento com Godot.
 
-Para desenvolver esses projetos, estou usando o T3 e conseguindo orquestrar Astra e Fable juntos. Também pretendo testar o Orca para fazer isso. Às vezes aproveito aqueles momentos em que ainda tenho limite disponível e o reset está chegando para experimentar mais alguma coisa.
+Para desenvolver esses projetos, estou usando o T3 e conseguindo orquestrar Astra e Fable juntos. Também pretendo testar o Orca para fazer isso. Tento sempre aproveitar meus tokens ao máximo, mantendo-os em uso o tempo todo para avançar nos meus projetos pessoais, inclusive pelo remote control. Quando o reset está chegando e ainda tenho limite disponível, aproveito para experimentar mais alguma coisa.
 
-Isso acaba sendo uma oportunidade para experimentar uma combinação diferente, mas gastar o limite não me diz se o trabalho foi bom. Ainda preciso olhar para o que foi feito, entender as decisões e decidir o que faz sentido continuar. É essa parte do uso de agentes que tenho vontade de registrar aqui, seguindo a ideia do blog como um diário técnico.
+Isso acaba sendo uma oportunidade para testar orquestrações com modelos e níveis de reasoning diferentes, sem depender sempre do melhor modelo disponível, como Astra e Fable juntos. Variando as combinações, tenho tido bons resultados, muitas vezes sem gastar tantos tokens. Mesmo assim, às vezes é interessante rodar só os melhores modelos no talo, orquestrados juntos, para ver o que sai, haha. Só que gastar o limite não me diz se o trabalho foi bom. Ainda preciso olhar para o que foi feito, entender as decisões e decidir o que faz sentido continuar. É essa parte do uso de agentes que tenho vontade de registrar aqui, seguindo a ideia do blog como um diário técnico.
 
 Ainda estou formando minhas opiniões. Os nomes e níveis de esforço que vou mencionar são os que estou usando nesses experimentos, e as preferências são minhas impressões de agora. São impressões de uso, não resultados de uma comparação controlada entre todos esses modelos.
 
@@ -18,9 +18,7 @@ Ainda estou formando minhas opiniões. Os nomes e níveis de esforço que vou me
 
 Uma das coisas que me interessa em projetos pessoais é poder aprender enquanto tento fazer alguma coisa funcionar. Posso mudar de ideia, explorar uma ferramenta ou gastar mais tempo numa pergunta que apareceu no caminho. Com Godot, esse espaço também tem servido para experimentar como eu quero trabalhar com os agentes.
 
-Tem bastante coisa para observar além do código que aparece no final. Como explicar a tarefa? Quanto contexto passar? Quando pedir uma segunda opinião? Vale deixar o mesmo agente implementar e revisar tudo? São perguntas que ficam mais interessantes quando existe um projeto para mexer, com decisões que vou precisar entender depois.
-
-Também quero tomar cuidado para a experimentação com modelos não ocupar todo o espaço do projeto. É fácil ter mais uma combinação para testar. O que me interessa é descobrir quais dessas combinações ajudam a desenvolver e aprender, e conseguir explicar por quê.
+Tem bastante coisa para observar além do código que aparece no final. Como explicar a tarefa? Quanto contexto passar? Quando pedir uma segunda opinião? Vale deixar o mesmo agente implementar e revisar tudo? São perguntas que ficam mais interessantes quando existe um projeto para mexer.
 
 ## Separando os papéis
 
@@ -40,8 +38,8 @@ Esses papéis são um ponto de partida para os meus testes. Ainda quero entender
 
 Orquestrar envolve decidir o que cada agente precisa receber e o que deve devolver. Se eu peço uma revisão, quero saber o que foi encontrado e por que aquilo importa. Se peço uma implementação, preciso conseguir olhar para a mudança e para a validação que foi feita. Uma mensagem dizendo que terminou não responde tudo isso.
 
-É uma parte que me chama atenção porque a autonomia precisa vir acompanhada de um jeito de conferir o resultado. Quero poder delegar uma tarefa sem acompanhar cada passo, mas continuar entendendo o que mudou. E, se uma verificação falhar ou não puder ser feita, preciso saber disso também.
+É uma parte que me chama atenção porque a autonomia precisa vir acompanhada de um jeito de conferir o resultado. Quero poder delegar uma tarefa sem acompanhar cada passo, mas continuar entendendo o que mudou. Por isso pretendo usar o harness configurado para o desenvolvimento dos jogos e criar testes E2E, acionados por uma skill, que passem por todas as funcionalidades implementadas em busca de erros e bugs. Como esses cenários são bem descritos, dá para montar uma esteira que rode todos os testes E2E de uma vez. E, se uma verificação falhar ou não puder ser feita, preciso saber disso também.
 
 Outra dúvida é quanto dessa coordenação deve ficar comigo. Ter um modelo organizando as tarefas parece útil, principalmente nos trabalhos maiores. Ao mesmo tempo, preciso conseguir perceber quando a direção escolhida deixou de fazer sentido. Uma boa segunda opinião pode ajudar aí, desde que não vire só mais uma resposta concordando com a primeira.
 
-Por enquanto, quero observar melhor esse ponto nos experimentos com Godot: quando dividir o trabalho ajuda a avançar e quando seria mais simples continuar numa única conversa. Também quero entender o que eu aprendo com cada tentativa, porque terminar uma alteração sem conseguir explicar as decisões deixa uma parte importante do projeto pessoal pelo caminho.
+Por enquanto, quero observar melhor esse ponto nos experimentos: quando dividir o trabalho ajuda a avançar e quando seria mais simples continuar numa única conversa. Esses experimentos estão acontecendo em duas frentes. Estou usando Godot e React Native para desenvolver jogos para desktop e mobile, iOS e Android, comparando a engine com o framework e testando as soluções disponíveis em cada um. Com o React Native, eu me beneficio de trabalhar há muitos anos com o ecossistema React no mercado. Já o Godot é uma experiência nova de trabalhar com uma engine, e ainda por cima open source, o que me faz querer tentar contribuir com o projeto no futuro. Também quero entender o que eu aprendo com cada tentativa, porque terminar uma alteração sem conseguir explicar as decisões deixa uma parte importante do projeto pessoal pelo caminho.
