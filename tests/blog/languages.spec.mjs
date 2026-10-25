@@ -43,7 +43,7 @@ test('language selector preserves article, query and fragment and persists throu
     )
     await expect(page.locator('html')).toHaveAttribute('lang', language.locale)
     await expect(page.locator('h1')).toHaveText(language.title)
-    await expect(page).toHaveTitle(`${language.title} | Blog | Henrique Rocha Dev`)
+    await expect(page).toHaveTitle(`${language.title} | Blog | HenriqueRochaDev`)
     await expect(page.locator('main .prose')).toContainText(language.body)
     await expect(page.getByRole('combobox', { name: language.label })).toHaveValue(language.locale)
     await page.reload()
