@@ -103,4 +103,4 @@ Other pending items, not a questionnaire to send all at once:
 
 ## Delivery boundaries
 
-Keep revisions reviewable through PRs. Maintain the documentation registry and run the repository's required checks through the delivery workflow. Report actual validation outcomes separately from editorial confidence. The publication follow-up changes the article's `draft` flag and this brief; it does not rewrite article prose, change other posts, translate the article, or add unsupported biography. Do not merge or deploy as part of local validation.
+Keep revisions reviewable through PRs. Maintain the documentation registry and run the repository's required checks through the delivery workflow. Report actual validation outcomes separately from editorial confidence. The publication follow-up changes the article's `draft` flag, this brief, and harness expectations that assumed synthetic posts were always newer than real posts. It does not rewrite article prose, change other posts, translate the article, or add unsupported biography. Do not merge or deploy as part of local validation.

@@ -53,7 +53,11 @@ export async function checkArtifacts(directory) {
     code: 'ENOENT',
   })
   const search = await json(directory, 'public/search.json')
-  assert.equal(search.length, publicPosts.length)
+  assert.deepEqual(
+    search.map((post) => post.slug).sort(),
+    publicPosts.map((post) => post.slug).sort(),
+    'search contains every published source post exactly once'
+  )
   assert.ok(search.some((post) => post.slug === publishedSlug))
   assert.ok(!search.some((post) => post.slug === draftSlug))
   assert.ok(search.every((post) => !('body' in post) && !('_raw' in post)))
