@@ -80,6 +80,28 @@ test('personal pages work and unpublished or invalid routes return 404', async (
   }
 })
 
+test('Portfolio Page navigation displays the local portfolio favicon', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/')
+  let link = page.getByRole('link', { name: 'Portfolio Page', exact: true })
+  if (testInfo.project.name === 'mobile') {
+    await page.getByRole('button', { name: 'Toggle Menu', exact: true }).click()
+    link = page
+      .locator('#mobile-navigation')
+      .getByRole('link', { name: 'Portfolio Page', exact: true })
+  }
+  await expect(link).toHaveAttribute('href', 'https://henriquerochadev.vercel.app/')
+  const icon = link.locator('img')
+  await expect(icon).toBeVisible()
+  await expect(icon).toHaveAttribute('alt', '')
+  await expect(icon).toHaveAttribute('aria-hidden', 'true')
+  expect(await icon.getAttribute('src')).toContain('portfolio-icon.png')
+  await expect
+    .poll(() => icon.evaluate((image) => image.complete && image.naturalWidth > 0))
+    .toBe(true)
+})
+
 test('local search opens by keyboard and finds a published post', async ({ page }) => {
   await page.goto('/')
   await page.keyboard.press(process.platform === 'darwin' ? 'Meta+k' : 'Control+k')

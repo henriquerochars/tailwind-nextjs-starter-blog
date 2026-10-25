@@ -1,6 +1,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
 import Logo from '@/data/logo.svg'
+import Image from 'next/image'
 import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
@@ -31,8 +32,18 @@ const Header = () => {
             <Link
               key={link.title}
               href={link.href}
-              className="hidden font-medium text-gray-900 sm:block dark:text-gray-100"
+              className="hidden items-center gap-2 font-medium text-gray-900 sm:flex dark:text-gray-100"
             >
+              {link.icon && (
+                <Image
+                  src={link.icon}
+                  alt=""
+                  aria-hidden={true}
+                  width={20}
+                  height={20}
+                  className="shrink-0"
+                />
+              )}
               {link.title}
             </Link>
           ))}
