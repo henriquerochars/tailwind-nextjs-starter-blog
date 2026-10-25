@@ -57,3 +57,13 @@ export const test = base.extend({
     { auto: true },
   ],
 })
+
+export async function openSearch(page) {
+  // This control appears only after hydration; window shortcuts cannot be replayed before it.
+  await expect(
+    page.getByRole('button', {
+      name: /^(Alternar modo escuro|Toggle Dark Mode|Cambiar modo oscuro)$/,
+    })
+  ).toBeVisible()
+  await page.keyboard.press(process.platform === 'darwin' ? 'Meta+k' : 'Control+k')
+}

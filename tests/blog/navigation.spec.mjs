@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.mjs'
+import { test, expect, openSearch } from './fixtures.mjs'
 import {
   umamiWebsiteId,
   oldestSlug,
@@ -37,11 +37,11 @@ test('listing paginates published posts and returns to page one', async ({ page 
   await page.goto('/blog')
   await expect(page.locator('main article')).toHaveCount(5)
   await expect(page.locator('main time').first()).toHaveText('2 de março de 2025')
-  await page.getByRole('link', { name: 'Next', exact: true }).click()
+  await page.getByRole('link', { name: 'Próxima', exact: true }).click()
   await expect(page).toHaveURL(/\/blog\/page\/2$/)
   await expect(page.locator('main article')).toHaveCount(5)
   await expect(page.getByText(draftTitle, { exact: true })).toHaveCount(0)
-  await page.getByRole('link', { name: 'Previous', exact: true }).click()
+  await page.getByRole('link', { name: 'Anterior', exact: true }).click()
   await expect(page).toHaveURL(/\/blog\/?$/)
 })
 
@@ -84,14 +84,12 @@ test('Portfolio Page navigation displays the local portfolio favicon', async ({
   page,
 }, testInfo) => {
   await page.goto('/')
-  let link = page.getByRole('link', { name: 'Portfolio Page', exact: true })
+  let link = page.getByRole('link', { name: 'Portfólio', exact: true })
   if (testInfo.project.name === 'mobile') {
-    await page.getByRole('button', { name: 'Toggle Menu', exact: true }).click()
-    link = page
-      .locator('#mobile-navigation')
-      .getByRole('link', { name: 'Portfolio Page', exact: true })
+    await page.getByRole('button', { name: 'Abrir menu', exact: true }).click()
+    link = page.locator('#mobile-navigation').getByRole('link', { name: 'Portfólio', exact: true })
   }
-  await expect(link).toHaveAttribute('href', 'https://henriquerochadev.vercel.app/')
+  await expect(link).toHaveAttribute('href', 'https://henriquerochadev.vercel.app/pt-br')
   const icon = link.locator('img')
   await expect(icon).toBeVisible()
   await expect(icon).toHaveAttribute('alt', '')
@@ -104,8 +102,8 @@ test('Portfolio Page navigation displays the local portfolio favicon', async ({
 
 test('local search opens by keyboard and finds a published post', async ({ page }) => {
   await page.goto('/')
-  await page.keyboard.press(process.platform === 'darwin' ? 'Meta+k' : 'Control+k')
-  const input = page.getByPlaceholder(/search/i)
+  await openSearch(page)
+  const input = page.getByPlaceholder(/buscar/i)
   await expect(input).toBeVisible()
   await input.fill('Harness published')
   await expect(page.getByText(publishedTitle, { exact: true }).last()).toBeVisible()
@@ -119,21 +117,21 @@ test('theme persists and mobile navigation opens, closes and restores scrolling'
   page,
 }, testInfo) => {
   await page.goto('/')
-  const toggle = page.getByRole('button', { name: 'Toggle Dark Mode', exact: true })
+  const toggle = page.getByRole('button', { name: 'Alternar modo escuro', exact: true })
   await toggle.click()
   await expect(page.locator('html')).toHaveClass(/dark/)
   await page.reload()
   await expect(page.locator('html')).toHaveClass(/dark/)
   await toggle.click()
   await expect(page.locator('html')).not.toHaveClass(/dark/)
-  const menu = page.getByRole('button', { name: 'Toggle Menu', exact: true })
+  const menu = page.getByRole('button', { name: 'Abrir menu', exact: true })
   if (testInfo.project.name === 'mobile') {
     await menu.click()
     await expect(menu).toHaveAttribute('aria-expanded', 'true')
     await expect(page.locator('body')).toHaveCSS('overflow', 'hidden')
     await page
       .locator('#mobile-navigation')
-      .getByRole('link', { name: 'Blog Index', exact: true })
+      .getByRole('link', { name: 'Índice do blog', exact: true })
       .click()
     await expect(page).toHaveURL(/\/blog$/)
     await expect(menu).toHaveAttribute('aria-expanded', 'false')
@@ -164,22 +162,22 @@ test('previous and next links navigate published posts and respect the ends', as
   const articleLink = (heading) =>
     page.getByRole('heading', { name: heading, exact: true }).locator('..').getByRole('link')
   await page.goto(`/blog/${publishedSlug}`)
-  await expect(page.getByRole('heading', { name: 'Next Article', exact: true })).toHaveCount(0)
-  const previous = articleLink('Previous Article')
+  await expect(page.getByRole('heading', { name: 'Próximo artigo', exact: true })).toHaveCount(0)
+  const previous = articleLink('Artigo anterior')
   await expect(previous).toHaveAttribute('href', '/blog/__harness/post-6')
   await previous.click()
   await expect(page).toHaveURL(/\/blog\/__harness\/post-6$/)
   await expect(
     page.getByRole('heading', { name: 'Harness pagination 6', exact: true })
   ).toBeVisible()
-  await expect(articleLink('Previous Article')).toHaveAttribute('href', '/blog/__harness/post-5')
-  const next = articleLink('Next Article')
+  await expect(articleLink('Artigo anterior')).toHaveAttribute('href', '/blog/__harness/post-5')
+  const next = articleLink('Próximo artigo')
   await expect(next).toHaveAttribute('href', `/blog/${publishedSlug}`)
   await next.click()
   await expect(page.getByRole('heading', { name: publishedTitle, exact: true })).toBeVisible()
   await page.goto(`/blog/${oldestSlug}`)
-  await expect(page.getByRole('heading', { name: 'Previous Article', exact: true })).toHaveCount(0)
-  const newer = articleLink('Next Article')
+  await expect(page.getByRole('heading', { name: 'Artigo anterior', exact: true })).toHaveCount(0)
+  const newer = articleLink('Próximo artigo')
   const title = await newer.textContent()
   const href = await newer.getAttribute('href')
   expect(href).not.toContain(draftSlug)

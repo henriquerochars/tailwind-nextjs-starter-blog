@@ -129,11 +129,34 @@ export const Authors = defineDocumentType(() => ({
   computedFields,
 }))
 
+const translationFields = {
+  locale: { type: 'enum' as const, options: ['pt-BR', 'en', 'es'], required: true },
+  translationKey: { type: 'string' as const, required: true },
+}
+export const TranslatedBlog = defineDocumentType(() => ({
+  name: 'TranslatedBlog',
+  filePathPattern: 'translations/**/blog/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    ...translationFields,
+    title: { type: 'string', required: true },
+    summary: { type: 'string' },
+  },
+  computedFields,
+}))
+export const TranslatedAuthor = defineDocumentType(() => ({
+  name: 'TranslatedAuthor',
+  filePathPattern: 'translations/**/authors/**/*.mdx',
+  contentType: 'mdx',
+  fields: { ...translationFields, occupation: { type: 'string' } },
+  computedFields,
+}))
+
 export default makeSource({
   // Explicit paths work with TS bundler resolution; baseUrl is unnecessary.
   disableImportAliasWarning: true,
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors],
+  documentTypes: [Blog, Authors, TranslatedBlog, TranslatedAuthor],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
@@ -153,8 +176,28 @@ export default makeSource({
     ],
   },
   onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
+    const { allBlogs, allTranslatedBlogs } = await importData()
     createTagCount(allBlogs)
     createSearchIndex(allBlogs)
+    for (const locale of ['pt-BR', 'en', 'es']) {
+      const posts = allBlogs
+        .filter((post) => !isProduction || !post.draft)
+        .map((post) => {
+          const translation = allTranslatedBlogs.find(
+            (item) => item.locale === locale && item.translationKey === post.slug
+          )
+          return {
+            ...post,
+            title: translation?.title || post.title,
+            summary: translation?.summary || post.summary,
+            path: `${locale === 'pt-BR' ? '' : `${locale}/`}${post.path}`,
+            locale: translation ? locale : 'pt-BR',
+          }
+        })
+      writeFileSync(
+        `public/search.${locale}.json`,
+        JSON.stringify(allCoreContent(sortPosts(posts)))
+      )
+    }
   },
 })

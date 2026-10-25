@@ -1,3 +1,7 @@
+'use client'
+
+import { useMessages } from '@/lib/i18n/LocaleProvider'
+
 import { ReactNode } from 'react'
 import Image from '@/components/Image'
 import Bleed from 'pliny/ui/Bleed.js'
@@ -10,12 +14,20 @@ import ScrollTop from '@/components/ScrollTop'
 
 interface LayoutProps {
   content: CoreContent<Blog>
+  contentLanguage?: string
   children: ReactNode
   next?: { path: string; title: string }
   prev?: { path: string; title: string }
 }
 
-export default function PostMinimal({ content, next, prev, children }: LayoutProps) {
+export default function PostMinimal({
+  content,
+  next,
+  prev,
+  children,
+  contentLanguage,
+}: LayoutProps) {
+  const t = useMessages()
   const { title, images } = content
   const displayImage =
     images && images.length > 0 ? images[0] : 'https://picsum.photos/seed/picsum/800/400'
@@ -34,10 +46,14 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
               </Bleed>
             </div>
             <div className="relative pt-10">
-              <PageTitle>{title}</PageTitle>
+              <PageTitle>
+                <span lang={contentLanguage}>{title}</span>
+              </PageTitle>
             </div>
           </div>
-          <div className="prose max-w-none py-4 dark:prose-invert">{children}</div>
+          <div className="prose max-w-none py-4 dark:prose-invert">
+            <div lang={contentLanguage}>{children}</div>
+          </div>
           <footer>
             <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
               {prev && prev.path && (
@@ -45,7 +61,7 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
                   <Link
                     href={`/${prev.path}`}
                     className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    aria-label={`Previous post: ${prev.title}`}
+                    aria-label={`${t.previousPost}: ${prev.title}`}
                   >
                     &larr; {prev.title}
                   </Link>
@@ -56,7 +72,7 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
                   <Link
                     href={`/${next.path}`}
                     className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    aria-label={`Next post: ${next.title}`}
+                    aria-label={`${t.nextPost}: ${next.title}`}
                   >
                     {next.title} &rarr;
                   </Link>
