@@ -32,6 +32,14 @@ const languages = [
   },
 ]
 
+test('home tab title reads Blog | HenriqueRochaDev in every language', async ({ page }) => {
+  for (const language of languages) {
+    await page.goto(language.prefix || '/')
+    await expect(page.locator('html')).toHaveAttribute('lang', language.locale)
+    await expect(page).toHaveTitle('Blog | HenriqueRochaDev')
+  }
+})
+
 test('language selector preserves article, query and fragment and persists through reload', async ({
   page,
 }) => {
@@ -43,7 +51,7 @@ test('language selector preserves article, query and fragment and persists throu
     )
     await expect(page.locator('html')).toHaveAttribute('lang', language.locale)
     await expect(page.locator('h1')).toHaveText(language.title)
-    await expect(page).toHaveTitle(`${language.title} | Blog | Henrique Rocha Dev`)
+    await expect(page).toHaveTitle(`${language.title} | Blog | HenriqueRochaDev`)
     await expect(page.locator('main .prose')).toContainText(language.body)
     await expect(page.getByRole('combobox', { name: language.label })).toHaveValue(language.locale)
     await page.reload()
