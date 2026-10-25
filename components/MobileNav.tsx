@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
 
@@ -76,9 +77,19 @@ const MobileNav = () => {
             <div key={link.title} className="px-12 py-4">
               <Link
                 href={link.href}
-                className="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
+                className="flex items-center gap-3 text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
                 onClick={onToggleNav}
               >
+                {link.icon && (
+                  <Image
+                    src={link.icon}
+                    alt=""
+                    aria-hidden={true}
+                    width={24}
+                    height={24}
+                    className="shrink-0"
+                  />
+                )}
                 {link.title}
               </Link>
             </div>
