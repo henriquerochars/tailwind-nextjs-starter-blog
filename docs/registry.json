@@ -31,6 +31,10 @@
     {
       "path": "docs/engineering/languages.md",
       "purpose": "Language routes, shared selector, translated content and locale artifacts"
+    },
+    {
+      "path": "docs/editorial/agentes-e-orquestracao.md",
+      "purpose": "Reusable editorial voice brief, author sources and open questions for the agents article draft"
     }
   ]
 }
