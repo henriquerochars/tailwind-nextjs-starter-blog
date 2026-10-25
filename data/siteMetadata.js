@@ -10,7 +10,7 @@ const siteUrl = 'https://henriquerochadevblog.vercel.app'
 
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Blog | Henrique Rocha Dev',
+  title: 'Blog | HenriqueRochaDev',
   author: 'Henrique Rocha Serrano',
   headerTitle: 'HenriqueRochaDev | Blog',
   description: 'Um blog criado para compartilhar conhecimento e experiências.',
