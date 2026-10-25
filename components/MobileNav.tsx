@@ -37,7 +37,7 @@ const MobileNav = () => {
         aria-expanded={navShow}
         aria-controls="mobile-navigation"
         onClick={onToggleNav}
-        className="sm:hidden"
+        className="md:hidden"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,11 @@ const MobileNav = () => {
         }`}
       >
         <div className="flex justify-end">
-          <button className="mt-11 mr-8 h-8 w-8" aria-label={t.closeMenu} onClick={onToggleNav}>
+          <button
+            className="mt-[1.125rem] mr-4 h-8 w-8 sm:mr-6"
+            aria-label={t.closeMenu}
+            onClick={onToggleNav}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"

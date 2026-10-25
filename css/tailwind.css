@@ -48,6 +48,16 @@
   --leading-14: 3.5rem;
 }
 
+/* The sticky site header's height; in-page anchors (TOC, heading links, citations) land below it. */
+@layer base {
+  :root {
+    --header-height: 4.25rem;
+  }
+  html {
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+  }
+}
+
 /* Tailwind v3's implicit border color. */
 @layer base {
   *,

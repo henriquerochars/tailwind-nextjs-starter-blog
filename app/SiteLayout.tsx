@@ -100,15 +100,21 @@ export function SiteLayout({
         <LocaleProvider locale={locale}>
           <ThemeProviders>
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
-            <SectionContainer>
-              <div className="flex h-screen flex-col justify-between font-sans">
-                <LocalSearch key={locale}>
-                  <Header />
-                  <main className="mb-auto">{children}</main>
-                </LocalSearch>
-                <Footer />
+            {/* The sticky header lives outside the width-constrained container so its bar spans
+                the viewport, and its parent spans the whole page so it stays pinned to the end. */}
+            <div className="flex min-h-screen flex-col font-sans">
+              <LocalSearch key={locale}>
+                <Header />
+                <SectionContainer>
+                  <main>{children}</main>
+                </SectionContainer>
+              </LocalSearch>
+              <div className="mt-auto">
+                <SectionContainer>
+                  <Footer />
+                </SectionContainer>
               </div>
-            </SectionContainer>
+            </div>
           </ThemeProviders>
         </LocaleProvider>
       </body>

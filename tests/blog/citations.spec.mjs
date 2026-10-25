@@ -30,5 +30,12 @@ test('citations link to unique local bibliography entries', async ({ page }) => 
     await link.click()
     await expect(page).toHaveURL(new RegExp(`/blog/${publishedSlug}${fragment}$`))
     await expect(page.locator(fragment)).toBeInViewport()
+    // The sticky site header must not cover the anchor target.
+    const headerBottom = await page
+      .getByRole('banner')
+      .evaluate((element) => element.getBoundingClientRect().bottom)
+    await expect
+      .poll(async () => (await page.locator(fragment).boundingBox()).y)
+      .toBeGreaterThanOrEqual(headerBottom)
   }
 })

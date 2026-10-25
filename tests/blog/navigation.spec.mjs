@@ -163,6 +163,41 @@ test('theme persists and mobile navigation opens, closes and restores scrolling'
   }
 })
 
+test('site header stays pinned as a solid single-row bar above in-page anchors', async ({
+  page,
+}) => {
+  await page.goto(`/blog/${publishedSlug}`)
+  const header = page.getByRole('banner')
+  await expect(header).toHaveCSS('position', 'sticky')
+  await expect(header).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+  const box = await header.boundingBox()
+  expect(box.width).toBe(await page.evaluate(() => innerWidth))
+  expect(box.height).toBeLessThanOrEqual(80)
+  const headerBottom = () => header.evaluate((element) => element.getBoundingClientRect().bottom)
+
+  await page.evaluate(() =>
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' })
+  )
+  await expect.poll(() => header.evaluate((element) => element.getBoundingClientRect().top)).toBe(0)
+  await expect(header.getByRole('link', { name: /HenriqueRochaDev/ }).first()).toBeVisible()
+
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
+  await page.getByRole('link', { name: 'Harness citations', exact: true }).click()
+  await expect(page).toHaveURL(/#harness-citations$/)
+  const heading = page.getByRole('heading', { name: 'Harness citations', exact: true })
+  await expect(heading).toBeInViewport()
+  await expect
+    .poll(async () => (await heading.boundingBox()).y)
+    .toBeGreaterThanOrEqual(await headerBottom())
+
+  await page.setViewportSize({ width: 320, height: 640 })
+  await expect.poll(async () => (await header.boundingBox()).height).toBe(box.height)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320)
+
+  await page.getByRole('button', { name: 'Alternar modo escuro', exact: true }).click()
+  await expect(header).toHaveCSS('background-color', 'rgb(3, 7, 18)')
+})
+
 test('configured Umami loads its local stub under the production CSP', async ({ page }) => {
   const response = await page.goto('/')
   const csp = response.headers()['content-security-policy']
